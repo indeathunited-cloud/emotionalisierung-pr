@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>try{var t=localStorage.getItem("theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script>
+
+<title>Emotionalisierung in der PR</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800&family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<!--
+  SO BEARBEITEST DU DEN TEXT
+  - Jeder Absatz steht zwischen <p> und </p>. Text dazwischen kannst du einfach ändern.
+  - Die Abschnitte sind mit Kommentaren wie "ABSCHNITT 2" markiert.
+  - Kursiv: <em>Wort</em> · Fett: <strong>Wort</strong>
+  - Fußnoten: Die Zahl im Text (<sup class="fn">…</sup>) und der Fußnotentext unten unter "Anmerkungen" gehören zusammen.
+  - Anführungszeichen „ und “ kannst du direkt tippen. Ein & schreibst du als &amp;
+  - BILD EINFÜGEN: Bilddatei ins Repository hochladen (Name ohne Leerzeichen/Umlaute, z. B. mein-bild.jpg)
+    und diesen Block zwischen zwei Absätze kopieren:
+      <figure>
+        <img src="mein-bild.jpg" alt="Kurze Beschreibung, was auf dem Bild zu sehen ist">
+        <figcaption>Bildunterschrift mit Quelle</figcaption>
+      </figure>
+-->
+<style>
+:root{color-scheme:light dark;
+  --bg:light-dark(#ffffff,#141110);--ink:light-dark(#1b1b1b,#f1ece7);--mute:light-dark(#6d6a67,#a8a09a);
+  --red:light-dark(#A1151C,#e2363d);--red-d:light-dark(#7d0f15,#5c0c10);--paper:light-dark(#f5f1ec,#221d1b);--line:light-dark(#ddd5cd,#3a3330)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+html,body{margin:0}
+html{scroll-padding-top:76px}
+body{background:var(--bg);color:var(--ink);font:18px/1.68 Inter,system-ui,sans-serif;overflow-x:clip}
+a{color:var(--red);text-underline-offset:2px}
+img{max-width:100%;display:block}
+
+/* Navigation */
+.nav{position:absolute;top:0;left:0;right:0;z-index:3;display:flex;justify-content:space-between;gap:12px;padding:14px max(5vw,16px);font:600 14px Inter,sans-serif}
+.nav a{color:#fff;text-decoration:none;opacity:.85}
+.nav a:hover{opacity:1;text-decoration:underline}
+
+/* Banner */
+.banner{position:relative;min-height:clamp(380px,62vh,600px);display:flex;align-items:flex-end;background:#111 url(blog-banner.jpg) center/cover no-repeat;padding:48px max(5vw,16px) clamp(28px,5vw,56px)}
+.banner .in{width:100%;max-width:1100px;margin:0 auto}
+.tag{display:inline-block;background:var(--red);color:#fff;font:700 13px Inter,sans-serif;padding:4px 10px;margin-bottom:14px}
+.stack{font:800 min(7.4vw,86px)/.98 Montserrat,Inter,sans-serif;text-transform:uppercase;color:#fff;letter-spacing:-.01em;margin:0}
+.stack span{display:block;white-space:nowrap}
+.stack .g1{color:rgba(255,255,255,.18)}.stack .g2{color:rgba(255,255,255,.36)}
+
+/* Kopf */
+.deck{max-width:calc(var(--col) + 2*var(--pad));margin:0 auto;padding:clamp(24px,4vw,40px) var(--pad) 0}
+.deck p{font:800 clamp(20px,2.6vw,28px)/1.22 Montserrat,Inter,sans-serif;text-transform:uppercase;margin:0;padding-bottom:18px;border-bottom:2px solid var(--ink);max-width:30em}
+.deck em{font-style:normal;color:var(--red)}
+
+/* Text */
+/* TEXTBREITE: --col ist die Breite der Textspalte (min, mitwachsend, max). Für breiteren Text die Werte erhöhen. */
+:root{--col:clamp(680px,54vw,880px);--pad:clamp(16px,4vw,40px)}
+.article{max-width:calc(var(--col) + 2*var(--pad));margin:0 auto;padding:clamp(24px,4vw,40px) var(--pad) 20px}
+.article p{margin:0 0 1.05em;hyphens:auto}
+.lead{font-size:20px;line-height:1.6}
+.lead::first-letter{font:800 3.4em/.8 Montserrat,Inter,sans-serif;float:left;color:var(--red);padding:.08em .1em 0 0}
+.article figure{margin:1.6em 0 1.8em}
+.article figure img{width:100%;height:auto}
+figcaption{font-size:14px;line-height:1.5;color:var(--mute);margin-top:8px;padding-left:10px;border-left:3px solid var(--red)}
+h2.sec{font:800 clamp(17px,2vw,20px)/1.25 Montserrat,Inter,sans-serif;text-transform:uppercase;letter-spacing:.02em;color:#fff;background:var(--red);margin:2.2em 0 1.1em;padding:10px 16px}
+h2.sec .no{opacity:.65;font-weight:600;margin-right:12px}
+sup.fn{line-height:0;font-size:.7em}
+sup.fn a{font-weight:700;text-decoration:none;padding:0 1px}
+strong.lead-in{color:var(--red)}
+.end{font-weight:600}
+.end::after{content:"";display:inline-block;width:.5em;height:.5em;background:var(--red);margin-left:.4em}
+
+/* Zitate */
+.pull{margin:1.8em 0;padding:16px 0 14px;border-top:3px solid var(--red);border-bottom:1px solid var(--line)}
+.pull p{font:800 clamp(22px,3vw,28px)/1.2 Montserrat,Inter,sans-serif;margin:0!important;hyphens:manual!important}
+.pull .r{color:var(--red)}
+.pull .who{font-size:14px;color:var(--mute);margin-top:8px}
+
+/* Checkliste */
+.check{background:var(--paper);margin:1.8em 0 2em;padding:clamp(18px,3vw,30px)}
+@media(min-width:1200px){.check{margin-left:-48px;margin-right:-48px}}
+.check .head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:8px 20px;border-bottom:2px solid var(--ink);padding-bottom:10px;margin-bottom:18px}
+.check .head .t{font:800 clamp(18px,2.4vw,24px)/1.15 Montserrat,Inter,sans-serif;text-transform:uppercase}
+.check .head .t span{color:var(--red)}
+.check .head .s{font-size:14px;color:var(--mute);line-height:1.4}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 24px}
+.item{display:grid;grid-template-columns:44px minmax(0,1fr);font-size:16px;line-height:1.5}
+.item .n{font:800 26px/1 Montserrat,Inter,sans-serif;color:var(--red)}
+.item .k{display:block;font:800 15px Montserrat,Inter,sans-serif;text-transform:uppercase;margin-bottom:4px}
+.item p{margin:0 0 8px!important}
+.item .kfc{background:var(--bg);padding:8px 12px;border-left:3px solid var(--red)}
+.item .kfc b{color:var(--red)}
+.weight{grid-column:1/-1;background:var(--ink);color:var(--bg);padding:16px 18px}
+.weight{--wacc:light-dark(#ff7b7b,#A1151C)}
+.weight .n{color:var(--wacc)}
+.weight .kfc{background:color-mix(in srgb,var(--bg) 10%,transparent);border-left-color:var(--wacc)}
+.weight .kfc b{color:var(--wacc)}
+
+/* Take-home */
+.take{display:grid;grid-template-columns:150px minmax(0,1fr);gap:20px;background:var(--red-d);color:#fff;padding:clamp(18px,3vw,28px);margin:0 0 1.8em}
+.take .lab{font:800 14px/1.3 Montserrat,Inter,sans-serif;text-transform:uppercase;border-right:1px solid rgba(255,255,255,.4);padding-right:16px}
+.take .lab big{display:block;font-size:30px;line-height:1;margin-bottom:6px}
+.take p{margin:0!important;font-size:18px;line-height:1.6}
+
+/* Tool-Hinweise */
+.tool{border:2px solid var(--ink);padding:14px 18px;margin:1.4em 0 1.6em}
+.tool p{margin:0!important;font-size:16px}
+.tool .tk{font:800 13px Montserrat,Inter,sans-serif;text-transform:uppercase;color:var(--red);margin-bottom:2px!important}
+.tool a{font-weight:700}
+
+/* Anhang, Fußnoten, Literatur */
+.after{max-width:calc(var(--col) + 2*var(--pad));margin:0 auto;padding:0 var(--pad) 56px}
+.after h2{font:800 16px Montserrat,Inter,sans-serif;text-transform:uppercase;color:var(--red);margin:2.4em 0 .8em;padding-top:14px;border-top:2px solid var(--ink)}
+.notes{padding-left:1.4em;margin:0;font-size:15px;line-height:1.55;color:var(--ink)}
+.notes li{margin-bottom:.7em;padding-left:.2em}
+.notes li::marker{color:var(--red);font-weight:700}
+.notes .back{text-decoration:none;font-weight:700}
+.notes li:target{background:color-mix(in srgb,var(--red) 10%,transparent)}
+.refs p{font-size:15px;line-height:1.5;padding-left:1.6em;text-indent:-1.6em;margin:0 0 .8em;overflow-wrap:anywhere}
+.anhang figure{margin:0;max-width:520px}
+.foot{font-size:14px;color:var(--mute);border-top:1px solid var(--line);margin-top:3em;padding-top:14px;display:flex;flex-wrap:wrap;gap:6px 18px}
+
+
+/* Zeitleiste */
+.tl{margin:1.4em 0 1.8em;border-top:2px solid var(--ink);border-bottom:1px solid var(--line)}
+.tl summary{cursor:pointer;list-style:none;display:flex;align-items:baseline;gap:12px;padding:12px 0;font-weight:600;font-size:16px}
+.tl summary .tl-t{flex:1}
+.tl summary::-webkit-details-marker{display:none}
+.tl summary::after{content:"+";flex:none;font:800 22px/1 Montserrat,Inter,sans-serif;color:var(--red)}
+.tl[open] summary::after{content:"–"}
+.tl summary:focus-visible{outline:3px solid var(--red);outline-offset:3px}
+.tl-k{font:800 13px Montserrat,Inter,sans-serif;text-transform:uppercase;color:var(--red);margin-right:8px}
+.tl ol{list-style:none;margin:4px 0 18px 6px;padding:0 0 0 22px;border-left:2px solid var(--red)}
+.tl li{position:relative;padding:0 0 18px 4px}
+.tl li:last-child{padding-bottom:2px}
+.tl li::before{content:"";position:absolute;left:-30px;top:5px;width:12px;height:12px;border-radius:50%;background:var(--bg);border:2px solid var(--red)}
+.tl li.hl::before{background:var(--red)}
+.tl time{display:block;font:800 14px/1.3 Montserrat,Inter,sans-serif;text-transform:uppercase;letter-spacing:.02em;margin-bottom:3px}
+.tl li.hl time{color:var(--red)}
+.tl li p{margin:0 0 4px!important;font-size:16px;line-height:1.55;hyphens:auto}
+.tl li p.src{font-size:13px;color:var(--mute);line-height:1.45}
+.tl li p.src a{color:var(--mute)}
+.tl li p.src a:hover{color:var(--red)}
+@media print{.tl ol{display:block}}
+
+/* Druckversion und KI-Hinweis */
+.pdf-link{display:inline-flex;align-items:center;gap:8px;margin-top:14px;font:700 15px Inter,system-ui,sans-serif;color:var(--red);text-decoration:none;border:1.5px solid var(--red);padding:7px 14px}
+.pdf-link:hover{background:var(--red);color:#fff}
+.pdf-link svg{width:16px;height:16px}
+.pdf-link[hidden]{display:none}
+.ki{font-size:12px;color:var(--mute);margin:10px 0 0}
+
+@media(min-width:1200px){body{font-size:19px}}
+@media(max-width:640px){
+  body{font-size:17px}
+  .lead{font-size:18px}
+  .grid{grid-template-columns:minmax(0,1fr)}
+  .take{grid-template-columns:minmax(0,1fr)}
+  .take .lab{border-right:0;border-bottom:1px solid rgba(255,255,255,.4);padding:0 0 12px}
+}
+
+/* Navigation (auf allen Seiten gleich) */
+.site-nav{position:sticky;top:0;z-index:60;background:var(--bg);border-bottom:1px solid var(--line)}
+.site-nav .in{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:4px 20px;padding:0 max(4vw,16px);min-height:56px}
+.site-nav .home{font:800 15px/1.2 Montserrat,Inter,sans-serif;text-transform:uppercase;color:var(--ink);text-decoration:none;margin-right:auto;white-space:nowrap}
+.site-nav .home .s{display:none}
+.site-nav a.l{font:600 15px Inter,system-ui,sans-serif;color:var(--ink);text-decoration:none;padding:8px 0;border-bottom:2px solid transparent;white-space:nowrap}
+.site-nav a.l:hover{border-bottom-color:var(--line)}
+.site-nav a.l[aria-current=page]{color:var(--red);border-bottom-color:var(--red)}
+.site-nav a:focus-visible{outline:3px solid var(--red);outline-offset:3px}
+.theme-btn{flex:none;width:40px;height:40px;border-radius:50%;border:1.5px solid var(--ink);background:var(--bg);color:var(--ink);display:grid;place-items:center;cursor:pointer;padding:0;margin-left:4px}
+.theme-btn:hover{background:var(--ink);color:var(--bg)}
+.theme-btn:focus-visible{outline:3px solid var(--red);outline-offset:2px}
+.theme-btn svg{width:18px;height:18px;display:block}
+@media(max-width:600px){.site-nav .home .f{display:none}.site-nav .home .s{display:inline}.site-nav .in{gap:4px 14px}.site-nav a.l{font-size:14px}}
+@media print{.site-nav{display:none}}
+</style>
+</head>
+<body>
+<nav class="site-nav" aria-label="Seiten"><div class="in"><a class="home" href="index.html"><span class="f">Emotionalisierung in der PR</span><span class="s">Start</span></a><a class="l" href="blog.html" aria-current="page">Blog</a><a class="l" href="simulator.html">Simulator</a><a class="l" href="baukasten.html">Baukasten</a><button class="theme-btn" id="themeBtn" type="button"></button></div></nav>
+
+
+<header class="banner">
+  <div class="in">
+    <span class="tag">Blogbeitrag</span>
+    <h1 class="stack" aria-label="Emotionalisierung in der PR"><span class="g1" aria-hidden="true">Emotionalisierung</span><span class="g2" aria-hidden="true">Emotionalisierung</span><span>Emotionalisierung</span><span>in der PR</span></h1>
+  </div>
+</header>
+
+<div class="deck"><p>Wann <em>helfen</em> Gefühle in der Krisenkommunikation, und wann <em>schaden</em> sie?</p>
+<!-- DRUCKVERSION: Der Knopf erscheint automatisch, sobald im Repository eine Datei namens druckversion.pdf liegt. -->
+<a class="pdf-link" href="druckversion.pdf" download hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>Druckversion (PDF)</a></div>
+
+<main class="article">
+<!-- ========== EINSTIEG ========== -->
+
+<p class="lead">Zehn Minuten vor der Präsentation kippt der Kaffee über die Tastatur. Der Bildschirm wird schwarz, das letzte Backup ist drei Tage alt. Ruhig bleiben, Plan B aus der Tasche ziehen? Schön wär's. Der erste Reflex ist meistens ein anderer, und den fasst ein einziges Wort zusammen: Scheiße. Auf Englisch hat das Wort vier Buchstaben. KFC kam im Februar 2018 mit dreien aus und hat sie sogar ganzseitig in die Zeitung drucken lassen.</p>
+
+<figure>
+  <img src="blog-anzeige-ausschnitt.jpg" alt="Ausschnitt der KFC-Anzeige: leerer Hühnchen-Eimer mit dem Schriftzug FCK auf rotem Grund">
+  <figcaption>Die Entschuldigung von KFC UK in The Sun und Metro, 23. Februar 2018 (Agentur: Mother London). <a href="#anhang">Vollständige Anzeige im Anhang.</a></figcaption>
+</figure>
+
+<p>Der Auslöser klang zunächst harmlos: ein neuer Lieferdienst. Am 14. Februar 2018 übernahm DHL die Belieferung der rund 900 britischen KFC-Restaurants vom bisherigen Logistikpartner Bidvest. Statt mehrerer Lager gab es nun ein einziges zentrales Depot in Rugby. Die Lieferkette geriet ins Stocken: Fahrer warteten stundenlang darauf, aufs Gelände zu kommen, Lieferungen blieben aus, Hühnchen verdarb. Auf dem Höhepunkt der Krise waren mehr als 600 Restaurants geschlossen. Kentucky Fried Chicken ohne Chicken.</p>
+
+<!-- ========== ZEITLEISTE (aufklappbar) ==========
+     Jede Station hat eine Quellenzeile. Neue Station = einen <li>-Block kopieren. -->
+<details class="tl">
+  <summary><span class="tl-t"><span class="tl-k">Chronologie</span> Die Krise von Februar bis Juni 2018, mit Quellen</span></summary>
+  <ol>
+    <li><time>14. Februar</time><p>DHL und der Partner QSL übernehmen die Belieferung der britischen KFC-Restaurants von Bidvest. Bidvest hatte mehrere Standorte im Land genutzt, jetzt wird alles aus einem einzigen Depot in Rugby ausgeliefert.</p><p class="src">Quellen: <a href="https://www.thegrocer.co.uk/food-waste/kfc-admits-chicken-waste-as-cost-of-dhl-failure-grows/563717.article" target="_blank" rel="noopener">The Grocer</a> · <a href="https://motortransport.co.uk/8154.article" target="_blank" rel="noopener">Motor Transport</a></p></li>
+    <li><time>16. Februar</time><p>In den ersten Restaurants fehlen Zutaten, darunter Hühnchen. KFC beginnt, Filialen zu schließen.</p><p class="src">Quellen: <a href="https://sg.finance.yahoo.com/news/apos-people-gone-chicken-crazy-080013175.html" target="_blank" rel="noopener">The Guardian (Nachdruck bei Yahoo)</a> · <a href="https://www.campaignasia.com/agencyportfolio/CaseStudyCampaign/Default.aspx?id=448479" target="_blank" rel="noopener">Campaign Asia</a></p></li>
+    <li><time>17. Februar</time><p>KFC erklärt die Lage auf seiner Website, schon mit einem Augenzwinkern: „The chicken crossed the road, just not to our restaurants.“ Auf Twitter heißt es: „The Colonel is working on it.“</p><p class="src">Quellen: <a href="https://fortune.com/2018/02/20/kfc-still-shut-uk/" target="_blank" rel="noopener">Fortune</a> · <a href="https://huffingtonpost.co.uk/entry/kfc-apologises_uk_5a8fefece4b01e9e56ba7335" target="_blank" rel="noopener">HuffPost UK</a></p></li>
+    <li><time>18.–20. Februar</time><p>Am 18. Februar sind nur 266 von rund 900 Restaurants geöffnet. Am Montag, dem 19., sind 575 geschlossen, am Dienstag noch 470. DHL nennt „operational issues“ als Ursache, am 20. entschuldigt sich DHL-Manager John Boulter öffentlich. Die Polizei in Tower Hamlets bittet auf Twitter, sie nicht wegen der #KFCCrisis zu kontaktieren.</p><p class="src">Quellen: <a href="https://sg.finance.yahoo.com/news/apos-people-gone-chicken-crazy-080013175.html" target="_blank" rel="noopener">The Guardian (Nachdruck bei Yahoo)</a> · <a href="https://fortune.com/2018/02/19/kfc-closed-chicken-shortage/" target="_blank" rel="noopener">Fortune (19.2.)</a> · <a href="https://fortune.com/2018/02/20/kfc-still-shut-uk/" target="_blank" rel="noopener">Fortune (20.2.)</a> · <a href="https://www.logisticsmanager.com/dhl-chief-promises-step-step-improvement-kfc/" target="_blank" rel="noopener">Logistics Manager</a></p></li>
+    <li><time>21. Februar</time><p>An diesem Tag wird online 53.000-mal darüber geschrieben, dass KFC kein Hühnchen hat, so viel wie an keinem anderen Tag der Krise.</p><p class="src">Quelle: <a href="https://www.campaignasia.com/agencyportfolio/CaseStudyCampaign/Default.aspx?id=448479" target="_blank" rel="noopener">Campaign Asia (Daten von Brandwatch)</a></p></li>
+    <li class="hl"><time>23. Februar</time><p>Die „FCK“-Anzeige erscheint ganzseitig in The Sun und Metro. Die beiden Zeitungen erreichen zusammen knapp sechs Millionen Leserinnen und Leser.</p><p class="src">Quellen: <a href="https://www.thedrum.com/news/2018/02/23/kfc-says-fck-responsive-print-ad-after-restaurants-kick-the-bucket" target="_blank" rel="noopener">The Drum</a> · <a href="https://www.itsnicethat.com/news/mother-london-kfc-advert-apology-230218" target="_blank" rel="noopener">It’s Nice That</a> · <a href="https://www.campaignasia.com/agencyportfolio/CaseStudyCampaign/Default.aspx?id=448479" target="_blank" rel="noopener">Campaign Asia</a></p></li>
+    <li><time>28. Februar</time><p>YouGov veröffentlicht Markendaten: Der Buzz-Score, also ob Menschen zuletzt Positives oder Negatives über KFC gehört haben, ist um 24 Punkte gefallen. Andere Kennzahlen sind weitgehend stabil geblieben.</p><p class="src">Quelle: <a href="https://yougov.com/en-gb/articles/20325-winner-winner-despite-no-chicken-dinner-kfcs-zinge" target="_blank" rel="noopener">YouGov</a></p></li>
+    <li><time>1.–8. März</time><p>97 Prozent der Restaurants haben wieder geöffnet, viele aber nur mit eingeschränkter Karte, und nun fehlt die Bratensoße. Am 8. März gibt KFC die Belieferung von bis zu 350 Restaurants im Norden an Bidvest zurück.</p><p class="src">Quellen: <a href="https://fortune.com/2018/03/01/first-chicken-now-gravy-kfc-has-another-shortage" target="_blank" rel="noopener">Fortune</a> · <a href="https://uk.finance.yahoo.com/news/kfc-returning-former-supplier-uk-213527393.html" target="_blank" rel="noopener">Reuters (Nachdruck bei Yahoo)</a> · <a href="https://thecaterer.com/all-content/kfc-in-partial-return-to-former-delivery-partner-following-chicken-shortages" target="_blank" rel="noopener">The Caterer</a></p></li>
+    <li><time>Juni 2018</time><p>Beim Werbefestival Cannes Lions erhält die Anzeige mehrere Auszeichnungen, darunter Gold in der Kategorie Print &amp; Publishing.</p><p class="src">Quellen: <a href="https://www.campaignlive.co.uk/article/kfcs-were-sorry-mother-wins-cannes-lions-gold-print-publishing/1485469" target="_blank" rel="noopener">Campaign</a> · <a href="https://www.campaignasia.com/agencyportfolio/CaseStudyCampaign/Default.aspx?id=448479" target="_blank" rel="noopener">Campaign Asia</a></p></li>
+  </ol>
+</details>
+
+<p>KFC antwortete mit einer ganzseitigen Anzeige in The Sun und Metro. Zu sehen war ein leerer Hühnchen-Eimer mit vertauschten Buchstaben: Statt „KFC“ stand dort „FCK“. Darunter folgte eine kurze Entschuldigung. Provozieren wollte man damit nicht. <em>„Es ging nicht darum, einfach nur ‚Fuck!‘ zu sagen, sondern darum, die Aufmerksamkeit der Leute zu bekommen, damit wir uns entschuldigen konnten“</em>, erklärte KFC-Marketingchefin Meghan Farren später (Deighton, 2018; eigene Übersetzung).</p>
+
+<p>Eigentlich hätte man erwarten können, dass sich ein Konzern endgültig blamieren würde, wenn er ausgerechnet „FCK“ in seine Entschuldigung schreibt. Das Gegenteil war der Fall: Die Anzeige wurde in Medien und sozialen Netzwerken breit aufgegriffen und gilt bis heute als Paradebeispiel für Krisenkommunikation mit Humor. Warum dieser Witz nicht nach hinten losgegangen ist, führt zu der größeren Frage, um die es in diesem Beitrag geht: Wann <em>helfen</em> Gefühle in der Krisenkommunikation, und wann <em>schaden</em> sie?</p>
+
+<!-- ========== ABSCHNITT 1: Emotionen und Emotionalisierung ========== -->
+<h2 class="sec" id="abschnitt-1"><span class="no">01</span>Emotionen und Emotionalisierung</h2>
+
+<p>Ob eine Entschuldigung wie die von KFC ankommt, hängt davon ab, welche Gefühle sie beim Publikum auslöst. Bevor wir uns die Anzeige genauer ansehen, lohnt sich deshalb ein kurzer Blick darauf, was Emotionen überhaupt sind. Vereinfacht gesagt sind es körperliche und mentale Reaktionen auf Reize aus unserer Umwelt (Dillard &amp; Peck, 2001). Welche Emotion entsteht, hängt davon ab, wie wir eine Situation bewerten. Die Forschung nennt das <em>Appraisal</em> (Bagozzi et al., 1999, S. 185). Dieselbe Nachricht kann Person A wütend machen, während Person B nur mit den Schultern zuckt, weil beide andere Erfahrungen und Erwartungen mitbringen. Die Emotion prägt wiederum, was wir als Nächstes tun: Wer wütend ist, will sich beschweren, und wer Angst hat, sucht Sicherheit. Der Emotionspsychologe Nico Frijda nennt das Handlungsbereitschaft (Frijda, 1986, zit. nach Bagozzi et al., 1999, S. 187).</p>
+
+<p>Die Theorie der diskreten Emotionen beantwortet die Frage, welche Emotionen es überhaupt gibt.<sup class="fn"><a href="#fn-1" id="ref-1" aria-label="Fußnote 1">1</a></sup> Sie geht von einer Handvoll eigenständiger Grundemotionen aus, etwa Freude, Wut, Angst oder Trauer. Jede davon entsteht aus einem typischen Appraisal (Frijda, 1986; Lazarus, 1991; zit. nach Bagozzi et al., 1999, S. 185). Und jede hat eine eigene Funktion (Izard, 2009): Freude bestärkt uns, Angst macht vorsichtig, und Wut mobilisiert uns gegen das, was uns im Weg steht. Für die Krisenkommunikation ist das zentral, denn Wut löst zum Beispiel ganz andere Reaktionen aus als Freude oder Trauer.</p>
+
+<p>Und gerade weil uns Emotionen so direkt beeinflussen, setzt auch die Kommunikation auf sie. Das nennt man Emotionalisierung: der gezielte Einsatz von Emotionen, um Aufmerksamkeit zu wecken, Einstellungen zu prägen oder Handlungen anzustoßen. Im Marketing ist das längst Alltag. In der PR ist die Sache etwas komplizierter. Werbung platziert ihre Botschaft selbst, PR ist dagegen oft auf Dritte angewiesen. Über soziale Medien können Unternehmen heute zwar direkt mit ihrem Publikum sprechen, gerade in Krisen bleibt aber die Berichterstattung der Medien entscheidend. Journalistinnen und Journalisten, Social-Media-Nutzerinnen und -Nutzer und die Öffentlichkeit entscheiden mit, wie eine Geschichte erzählt wird.</p>
+
+<!-- ========== ABSCHNITT 2: Warum Krisen immer emotional sind ========== -->
+<h2 class="sec" id="abschnitt-2"><span class="no">02</span>Warum Krisen immer emotional sind</h2>
+
+<p>Eine Krise ist von Grund auf emotional. Die Gefühle sind schon da, bevor das betroffene Unternehmen sein erstes Statement veröffentlicht. Irgendwo ist ein Fuck-up passiert, und jetzt muss er ausgebügelt werden, meistens vom Unternehmen selbst. Die beste Krise ist natürlich die, von der nie jemand erfährt. Ist sie aber erst einmal öffentlich, muss das Unternehmen nicht nur den Betroffenen, sondern auch der Presse Rede und Antwort stehen. Für die Medien ist eine Krise im Grunde schon eine fertige Story: Es gibt Betroffene, einen Schuldigen und jede Menge Gefühle. Beeinflussen kann das Unternehmen nur noch, wohin sich diese Gefühle entwickeln.</p>
+
+<p>Wie intensiv diese Gefühle ausfallen, hängt vor allem davon ab, wem die Öffentlichkeit die Schuld gibt. Hier setzt die Situational Crisis Communication Theory (SCCT) von Coombs (2007) an. Je mehr Verantwortung die Öffentlichkeit dem Unternehmen zuschreibt, desto größer wird die Wut und desto kleiner das Mitgefühl. Im Extremfall kommt sogar Schadenfreude dazu. Und wer wütend ist, wendet sich ab oder beschwert sich lautstark, etwa in den sozialen Medien.</p>
+
+<p>Die Antwort auf die Schuldfrage steht allerdings nicht von Anfang an fest. Sie hängt auch davon ab, wie eine Krise geframt wird, also in welchen Rahmen sie gestellt wird. Krisenmanager versuchen deshalb, bestimmte Fragen in den Vordergrund zu rücken: Hat eine äußere Kraft die Krise ausgelöst? War es ein Versehen oder Absicht? Lag es an der Technik oder am Menschen? Es macht einen großen Unterschied, ob die Leute von einem Unfall, von Sabotage oder von grober Fahrlässigkeit ausgehen (Coombs, 2007). Coombs unterscheidet daher drei Gruppen: Krisen, in denen das Unternehmen selbst Opfer ist, etwa bei einer Naturkatastrophe; Unfälle, bei denen unbeabsichtigt etwas schiefgeht, zum Beispiel durch einen technischen Fehler; und vermeidbare Krisen, in denen das Unternehmen bewusst Risiken eingegangen ist oder gegen Regeln verstoßen hat. Das erklärt auch, warum sich KFC Humor leisten konnte: Ein Lieferengpass ohne Verletzte gehört eher in die mittlere Gruppe. Bei einer vermeidbaren Krise mit Geschädigten wäre ein Wortspiel undenkbar gewesen.</p>
+
+<p>Wut und Mitgefühl entstehen erst, wenn die Öffentlichkeit über die Schuld urteilt. In den ersten Stunden einer Krise ist oft noch gar nicht klar, wer verantwortlich ist, und trotzdem empfinden die Menschen schon etwas. Yan Jin, Augustine Pang und Glen T. Cameron haben mit dem Integrated Crisis Mapping Model (ICM) untersucht, welche Emotionen Menschen in Krisen empfinden (Jin et al., 2012). Je nach Art der Krise erwarteten die Forschenden ein anderes Hauptgefühl. Ausgewertet wurde die Berichterstattung über 14 sehr unterschiedliche Krisen in den USA, von einem Akku-Rückruf über einen großen Stromausfall bis zu einem Amoklauf (S. 275). Fast überall trat aber zuerst dasselbe Gefühl auf: Angst (S. 286). Sie ist damit so etwas wie die Grundemotion von Krisen, zumindest solange unklar ist, wie gefährlich die Lage ist. Bei KFC war das anders: Ein Lieferengpass bedroht niemanden, hier dürfte von Anfang an der Ärger überwogen haben.</p>
+
+
+<p>Für Unternehmen macht das kaum einen Unterschied, denn Angst und Ärger haben etwas gemeinsam: Beide wühlen auf. Wie wichtig das ist, zeigen Berger und Milkman (2012) in einer Studie dazu, welche Online-Inhalte besonders oft geteilt werden. Den Ausschlag gibt dabei, wie stark ein Gefühl uns aufwühlt, ganz gleich, ob es positiv oder negativ ist. Inhalte, die Angst, Wut, Staunen oder Belustigung auslösen, verbreiten sich besonders schnell. Inhalte mit eher lähmenden Gefühlen wie Trauer werden dagegen seltener geteilt. Berger und Milkman haben zwar keine Krisen untersucht, ihre Ergebnisse lassen sich aber gut übertragen: Angst und Ärger, also genau die Gefühle, die Krisen meist begleiten, gehören zu denen, die sich online am schnellsten verbreiten. Die fertige Story liefern die Medien, und die Aufregung des Publikums sorgt dafür, dass sie geteilt wird. Das erklärt, warum Krisen heute oft innerhalb weniger Stunden eskalieren. Wer als Unternehmen erst einmal abwartet, überlässt die Aufregung der Öffentlichkeit sich selbst, und die teilt sie weiter.</p>
+
+<p>Daraus folgt zweierlei.<sup class="fn"><a href="#fn-2" id="ref-2" aria-label="Fußnote 2">2</a></sup> Unternehmen müssen schnell reagieren, und sie müssen sich überlegen, welches Gefühl sie der Angst und dem Ärger der Öffentlichkeit entgegensetzen. Mit einem rein sachlichen Statement ist es dabei selten getan, denn auch Nüchternheit löst Gefühle aus, etwa den Eindruck, dem Unternehmen seien die Betroffenen egal. KFC hat einen anderen Weg gewählt und auf ein Gefühl gesetzt, das sich laut Berger und Milkman ebenso schnell verbreitet: Belustigung. Wie das im Detail funktioniert, schauen wir uns im nächsten Abschnitt an.</p>
+
+<!-- ========== ABSCHNITT 3: Was steckt hinter dem leeren Eimer? ========== -->
+<h2 class="sec" id="abschnitt-3"><span class="no">03</span>Was steckt hinter dem leeren Eimer?</h2>
+
+<p>Die Ausgangslage war denkbar schlecht: Hunderte Restaurants waren geschlossen, und manche Kundinnen und Kunden riefen sogar die Polizei. Trotzdem ist aus der Krise eine Geschichte geworden, über die heute vor allem positiv gesprochen wird. Beim Werbefestival Cannes Lions gewann die Anzeige 2018 sogar Gold in der Kategorie Print &amp; Publishing (Degun, 2018). Woran man Emotionalisierung in der Krisenkommunikation erkennt, lässt sich an der Zeitungsanzeige gut zeigen (siehe <a href="#anhang">Anhang</a>). Opiłowski (2020) nennt dafür eine Reihe von Merkmalen, die sich hier fast alle wiederfinden:</p>
+
+<div class="check">
+  <div class="head">
+    <div class="t">Checkliste: <span>Emotionalisierung erkennen</span></div>
+    <div class="s">Merkmale nach Opiłowski (2020),<br>angewendet auf die FCK-Anzeige</div>
+  </div>
+  <div class="grid">
+    <div class="item"><div class="n">01</div><div class="b">
+      <span class="k">Wortwahl</span>
+      <p>Gefühlswörter, wertende Adjektive, Übertreibungen, Metaphern und Vergleiche (S. 215).</p>
+      <p class="kfc"><b>Bei KFC</b> sind das „Huge apologies“ und „a hell of a week“, also Umgangssprache statt Konzerndeutsch.</p></div></div>
+    <div class="item"><div class="n">02</div><div class="b">
+      <span class="k">Indirekte Mittel</span>
+      <p>Ironie, Anspielungen, Wortspiele und Doppeldeutigkeiten. Sie wirken oft stärker als offen gezeigte Gefühle, weil man ihnen weniger leicht vorwerfen kann, „zu emotional“ zu sein (S. 219).</p>
+      <p class="kfc"><b>Bei KFC</b> tragen das FCK-Wortspiel und die trockene Untertreibung „A chicken restaurant without any chicken. It's not ideal.“ die ganze Anzeige.</p></div></div>
+    <div class="item"><div class="n">03</div><div class="b">
+      <span class="k">Bild und Ton</span>
+      <p>Fotos, Farben, Nahaufnahmen und Musik transportieren Gefühle, ohne dass ein Wort fällt (S. 215).</p>
+      <p class="kfc"><b>Bei KFC</b> zeigt ein leerer Eimer in den Markenfarben Rot und Weiß die Panne auf einen Blick.</p></div></div>
+    <div class="item"><div class="n">04</div><div class="b">
+      <span class="k">Personalisierung und Dramatisierung</span>
+      <p>Im Mittelpunkt stehen Menschen und Konflikte statt abstrakter Sachverhalte (Burger &amp; Luginbühl, 2014, zit. nach Opiłowski, 2020, S. 213).</p>
+      <p class="kfc"><b>Bei KFC</b> spricht die Marke selbst im „Wir“. Trotzdem geht es um Menschen: die Gäste, die umsonst zu einem geschlossenen Restaurant gefahren sind, und die Mitarbeitenden, denen die Anzeige ausdrücklich dankt.</p></div></div>
+    <div class="item"><div class="n">05</div><div class="b">
+      <span class="k">Art der Emotion</span>
+      <p>Verbindet die Botschaft (Gemeinschaft, Dankbarkeit, Hoffnung) oder grenzt sie ab (Wut, Angst, Schuld)? (Döveling, 2005, zit. nach Opiłowski, 2020, S. 214–215).</p>
+      <p class="kfc"><b>Bei KFC</b> wirkt die Botschaft eindeutig verbindend: Die Anzeige entschuldigt sich bei den Gästen und dankt dem Team. Wut oder Schuldzuweisungen kommen nicht vor.</p></div></div>
+    <div class="item"><div class="n">06</div><div class="b">
+      <span class="k">Das Nicht-Gesagte</span>
+      <p>Auch Schweigen und Auslassungen können emotionalisieren. Darum lohnt sich immer die Kontrollfrage: Was fehlt? (S. 220)</p>
+      <p class="kfc"><b>Bei KFC</b> fehlt DHL. Der neue Lieferdienst wird mit keinem Wort erwähnt, und die Ursachen der Panne bleiben offen. KFC bedauert also, übernimmt aber keine konkrete Schuld.</p></div></div>
+    <div class="item weight"><div class="n">07</div><div class="b">
+      <span class="k">Gewichtung</span>
+      <p>Begleitet das Gefühl die Information, oder dominiert es die ganze Botschaft? (S. 215)</p>
+      <p class="kfc"><b>Bei KFC</b> steht das Bild im Vordergrund, die Informationen gehen dabei aber nicht verloren. Unter dem Eimer stehen die Entschuldigung, ein kurzer Zwischenstand und der Hinweis auf eine Website, auf der man nachsehen konnte, ob die eigene Filiale geöffnet hat.</p></div></div>
+  </div>
+</div>
+
+<p>Für den Humor spricht auch ein Experiment von Berger und Milkman (2012): Je stärker eine Werbekampagne die Teilnehmenden belustigte, desto eher wollten sie sie teilen (S. 200). Ob das auch für Entschuldigungen in Krisen gilt, ist zwar nicht untersucht. Mit Humor hat KFC aber gewissermaßen Feuer mit Feuer bekämpft: Der Ärger über die geschlossenen Restaurants verbreitete sich online schnell, und die Anzeige setzte etwas dagegen, das sich genauso schnell verbreitete.<sup class="fn"><a href="#fn-3" id="ref-3" aria-label="Fußnote 3">3</a></sup> Begeisterung war das sicher nicht, aber deutlich besser als die Stimmung davor.</p>
+
+<p>Kritisch lässt sich einwenden, dass die Anzeige die Krise noch bekannter gemacht hat.<sup class="fn"><a href="#fn-4" id="ref-4" aria-label="Fußnote 4">4</a></sup> Allerdings war die Panne zu diesem Zeitpunkt längst landesweit in den Nachrichten, denn die Anzeige erschien erst gut eine Woche nach Beginn der Krise. Kaum jemand hat also erst durch sie davon erfahren. Verändert hat die Anzeige vor allem, worüber gesprochen wurde: Statt über geschlossene Restaurants berichteten Medien und soziale Netzwerke jetzt über die Entschuldigung. Das ist genau das Framing aus dem Krisenteil: KFC konnte die Krise nicht mehr aus den Schlagzeilen holen, hat mit der Anzeige aber mitbestimmt, in welchem Licht sie dort steht. Die zusätzliche Aufmerksamkeit hat dem Unternehmen deshalb eher genützt.</p>
+
+<!-- ========== ABSCHNITT 4: Ist das noch echt? ========== -->
+<h2 class="sec" id="abschnitt-4"><span class="no">04</span>Ist das noch echt?</h2>
+
+<p>KFC ist ein Konzern und will Geld verdienen. Das allein macht eine Entschuldigung aber noch nicht unehrlich. Der Deutsche Kommunikationskodex erlaubt PR ausdrücklich, „konsequent die Partei ihrer Arbeit- oder Auftraggeber“ zu ergreifen, solange sie dabei transparent arbeitet und auf unredliche Praktiken verzichtet (DRPR, 2012). Die Grenze zieht der Kodex bei der Wahrhaftigkeit: PR darf keine falschen oder irreführenden Informationen verbreiten, und sie darf das Vertrauen der Öffentlichkeit nicht missbrauchen. Außerdem soll sie durch Argumente überzeugen. Hinter der FCK-Anzeige standen zudem Menschen, die die Krise selbst mitgenommen hat. Farren erzählt, dass ein Drittel ihres Marketingteams in dieser Zeit im Verteilzentrum in Rugby mitarbeitete, in Kühl- und Gefrierräumen (Deighton, 2018).</p>
+
+<p>Schwieriger wird es, wenn Gefühle Verantwortung ersetzen sollen. Rechtsabteilungen bremsen Entschuldigungen oft, weil sie als Schuldeingeständnis gelten könnten. Ein Ausweg ist die teilweise Entschuldigung, die nur Bedauern und Mitgefühl ausdrückt, ohne Schuld einzuräumen. Juristisch ist sie deutlich unbedenklicher als ein volles Schuldeingeständnis (Patel &amp; Reinsch, 2003, S. 21–22). Der Kodex beschreibt diesen Konflikt unter dem Stichwort Loyalität: PR vertritt die Interessen ihres Auftraggebers und bewahrt ihn vor Schaden, aber nur, soweit sie dabei keine ethischen Normen verletzt (DRPR, 2012). Wer Bedauern zeigt, um Verantwortung zu vermeiden, überschreitet diese Grenze.</p>
+
+<!-- ========== ABSCHNITT 5: Helfen oder schaden? ========== -->
+<h2 class="sec" id="abschnitt-5"><span class="no">05</span>Helfen oder schaden?</h2>
+
+<div class="take">
+  <div class="lab"><big>Take-<br>home</big>Definition</div>
+  <p>Am Anfang haben wir Emotionalisierung als gezielten Einsatz von Emotionen beschrieben. Nach dem Blick auf KFC lässt sich das genauer fassen: Emotionalisierung steigert und bündelt Gefühle in einer Botschaft, und diese Gefühle können die Information begleiten oder ganz in den Vordergrund rücken (Opiłowski, 2020, S. 215). In Krisen fängt sie allerdings nie bei null an, denn die Gefühle sind schon da. Emotionalisierung kann also nur noch beeinflussen, welche davon sich durchsetzen.</p>
+</div>
+
+<p><strong class="lead-in">Helfen können Gefühle</strong> vor allem dann, wenn sie zur Art der Krise und zur Stimmung des Publikums passen. Wer die Verantwortung trägt, sollte sie auch emotional übernehmen. Bei vermeidbaren Krisen senkt ein offenes Schuldeingeständnis die Wut und stärkt das Mitgefühl (Grappi &amp; Romani, 2015). Außerdem überzeugen Botschaften eher, wenn sie die Gefühlslage des Publikums treffen, statt an ihr vorbeizureden (Nabi, 2010, S. 157). Und die Reihenfolge muss stimmen: Zuerst brauchen die Betroffenen Informationen und Anteilnahme, erst danach geht es um den Ruf des Unternehmens (Coombs, 2007, S. 165).</p>
+
+<p><strong class="lead-in">Schaden können Gefühle</strong> zunächst, wenn sie nicht zur Lage passen. Je weiter die Reaktion des Unternehmens und die Art der Krise auseinanderliegen, desto stärker treibt die Wut negative Reaktionen an. Daran ändert auch ein guter Ruf nichts (Grappi &amp; Romani, 2015).<sup class="fn"><a href="#fn-5" id="ref-5" aria-label="Fußnote 5">5</a></sup> Ein Beispiel dafür, wie es nicht laufen sollte, lieferte BP-Chef Tony Hayward im Mai 2010. Bei der Explosion der Ölplattform Deepwater Horizon waren elf Arbeiter gestorben, seit Wochen lief Öl in den Golf von Mexiko. Vor Reportern entschuldigte sich Hayward bei den Menschen an der Küste und versicherte, niemand wolle das Ende der Krise mehr als er. Sein nächster Satz: „I'd like my life back.“</p>
+
+<div class="pull"><p>„I'd like my <span class="r">life back.</span>“</p><div class="who">Tony Hayward, BP-Chef, Mai 2010</div></div>
+
+<p>Gemeint war vielleicht Erschöpfung, angekommen ist Selbstmitleid, und das in einer Krise mit Todesopfern. Wenige Tage später musste Hayward sich für diesen Satz entschuldigen (HuffPost, 2010a, 2010b). Gefühle schaden auch, wenn sie zu stark dosiert sind. Stark emotionalisierte Inhalte bleiben zwar besser hängen, aber Hintergrundinformationen gehen dabei verloren (Schramm &amp; Wirth, 2006, S. 40). In einer Krise können das genau die Informationen sein, die Betroffene brauchen. Und schließlich schaden Gefühle, wenn sie an die Stelle von Inhalten treten. Bei emotional geframter Krisenkommunikation macht es kaum noch einen Unterschied, ob die Reaktion inhaltlich zur Krise passt (Claeys &amp; Cauberghe, 2012, zit. nach Grappi &amp; Romani, 2015). Gefühle können also überdecken, was eigentlich gesagt wird. Das ist Chance und Risiko zugleich, denn dieselben Mittel, die eine ehrliche Entschuldigung tragen, dienen auch der Manipulation (Opiłowski, 2020, S. 220).</p>
+
+<p class="end">Unterm Strich sind Gefühle in der Krisenkommunikation weder ein verzichtbares Extra noch ein Ersatz für Inhalt. Sie sind das Transportmittel, und was ankommt, hängt davon ab, was man auflädt.</p>
+
+<aside class="tool">
+  <p class="tk">Zum Ausprobieren</p>
+  <p>Wie sich Schuldfrage, Gefühle und Reaktion des Unternehmens auf die Verbreitung auswirken, zeigt der <a href="simulator.html">Shitstorm-Simulator</a>. Die Checkliste selbst anwenden lässt sich im <a href="baukasten.html">Statement-Baukasten</a>.</p>
+</aside>
+
+</main>
+
+<div class="after">
+<!-- ========== FUSSNOTEN ========== -->
+<h2 id="anmerkungen">Anmerkungen</h2>
+<ol class="notes">
+  <li id="fn-1">„Diskret“ heißt hier so viel wie „einzeln“ oder „klar abgegrenzt“. <a class="back" href="#ref-1" aria-label="Zurück zum Text">↩</a></li>
+  <li id="fn-2">Das gilt nicht für jede Krise in gleichem Maß. Welche Reaktion angemessen ist, hängt immer vom Einzelfall ab, etwa von der Art der Krise und davon, wer betroffen ist. Der KFC-Fall zeigt die Mechanismen besonders deutlich, ein Rezept für jede Krise ist er aber nicht. <a class="back" href="#ref-2" aria-label="Zurück zum Text">↩</a></li>
+  <li id="fn-3">Dass es so kommt, war keineswegs sicher. Ein Wortspiel mit einem Schimpfwort hätte genauso als respektlos ankommen und die Wut noch verstärken können. <a class="back" href="#ref-3" aria-label="Zurück zum Text">↩</a></li>
+  <li id="fn-4">Wie im Krisenteil beschrieben, ist der beste Fall für ein Unternehmen, dass möglichst wenige Menschen überhaupt von einer Krise erfahren. Eine Anzeige, die selbst Aufmerksamkeit erzeugt, läuft diesem Ziel zunächst zuwider. <a class="back" href="#ref-4" aria-label="Zurück zum Text">↩</a></li>
+  <li id="fn-5">Coombs (2007) sieht das anders: Für ihn ist ein guter Ruf vor der Krise ein Puffer, mit dem ein Unternehmen weniger Schaden nimmt und sich schneller erholt (S. 165). Beides passt zusammen, wenn man den guten Ruf als Polster versteht, das den Schaden abfedert, eine unpassende Reaktion aber nicht ausgleicht. <a class="back" href="#ref-5" aria-label="Zurück zum Text">↩</a></li>
+</ol>
+
+<!-- ========== LITERATUR ========== -->
+<h2 id="weiterlesen">Weiterlesen</h2>
+<div class="refs">
+  <p>Bagozzi, R. P., Gopinath, M., &amp; Nyer, P. U. (1999). The role of emotions in marketing. <em>Journal of the Academy of Marketing Science, 27</em>(2), 184–206. <a href="https://doi.org/10.1177/0092070399272005">https://doi.org/10.1177/0092070399272005</a></p>
+  <p>Berger, J., &amp; Milkman, K. L. (2012). What makes online content viral? <em>Journal of Marketing Research, 49</em>(2), 192–205. <a href="https://doi.org/10.1509/jmr.10.0353">https://doi.org/10.1509/jmr.10.0353</a></p>
+  <p>Coombs, W. T. (2007). Protecting organization reputations during a crisis: The development and application of Situational Crisis Communication Theory. <em>Corporate Reputation Review, 10</em>(3), 163–176. <a href="https://doi.org/10.1057/palgrave.crr.1550049">https://doi.org/10.1057/palgrave.crr.1550049</a></p>
+  <p>Degun, G. (2018, 19. Juni). KFC's 'We're sorry' by Mother wins Cannes Lions gold in Print &amp; Publishing. <em>Campaign.</em> <a href="https://www.campaignlive.co.uk/article/kfcs-were-sorry-mother-wins-cannes-lions-gold-print-publishing/1485469">https://www.campaignlive.co.uk/article/kfcs-were-sorry-mother-wins-cannes-lions-gold-print-publishing/1485469</a></p>
+  <p>Deighton, K. (2018, 27. Juni). ‘Marketers were working in depot freezers’: lifting the lid on KFC’s chicken crisis &amp; FCK ad. <em>The Drum.</em> <a href="https://www.thedrum.com/news/marketers-were-working-depot-freezers-lifting-the-lid-kfc-s-chicken-crisis-fck-ad">https://www.thedrum.com/news/marketers-were-working-depot-freezers-lifting-the-lid-kfc-s-chicken-crisis-fck-ad</a></p>
+  <p>Deutscher Rat für Public Relations. (2012). <em>Deutscher Kommunikationskodex.</em> <a href="http://www.kommunikationskodex.de/">http://www.kommunikationskodex.de/</a></p>
+  <p>Dillard, J. P., &amp; Peck, E. (2001). Persuasion and the structure of affect: Dual systems and discrete emotions as complementary models. <em>Human Communication Research, 27</em>(1), 38–68. <a href="https://doi.org/10.1111/j.1468-2958.2001.tb00775.x">https://doi.org/10.1111/j.1468-2958.2001.tb00775.x</a></p>
+  <p>Frijda, N. H. (1986). <em>The emotions.</em> Cambridge University Press.</p>
+  <p>Grappi, S., &amp; Romani, S. (2015). Company post-crisis communication strategies and the psychological mechanism underlying consumer reactions. <em>Journal of Public Relations Research, 27</em>(1), 22–45. <a href="https://doi.org/10.1080/1062726X.2014.924839">https://doi.org/10.1080/1062726X.2014.924839</a></p>
+  <p>HuffPost. (2010a, 1. Juni). BP CEO Tony Hayward (video): 'I'd like my life back'. <a href="https://www.huffpost.com/entry/bp-ceo-tony-hayward-video_n_595906">https://www.huffpost.com/entry/bp-ceo-tony-hayward-video_n_595906</a></p>
+  <p>HuffPost. (2010b, 2. Juni). Gulf oil spill: BP CEO Tony Hayward apologizes for saying 'I want my life back'. <a href="https://www.huffpost.com/entry/bp-ceo-tony-hayward-apologizes-life-back_n_597966">https://www.huffpost.com/entry/bp-ceo-tony-hayward-apologizes-life-back_n_597966</a></p>
+  <p>Izard, C. E. (2009). Emotion theory and research: Highlights, unanswered questions, and emerging issues. <em>Annual Review of Psychology, 60</em>, 1–25. <a href="https://doi.org/10.1146/annurev.psych.60.110707.163539">https://doi.org/10.1146/annurev.psych.60.110707.163539</a></p>
+  <p>Jin, Y., Pang, A., &amp; Cameron, G. T. (2012). Toward a publics-driven, emotion-based conceptualization in crisis communication: Unearthing dominant emotions in multi-staged testing of the Integrated Crisis Mapping (ICM) model. <em>Journal of Public Relations Research, 24</em>(3), 266–298. <a href="https://doi.org/10.1080/1062726X.2012.676747">https://doi.org/10.1080/1062726X.2012.676747</a></p>
+  <p>Lazarus, R. S. (1991). <em>Emotion and adaptation.</em> Oxford University Press. <a href="https://doi.org/10.1093/oso/9780195069945.001.0001">https://doi.org/10.1093/oso/9780195069945.001.0001</a></p>
+  <p>Nabi, R. L. (2010). The case for emphasizing discrete emotions in communication research. <em>Communication Monographs, 77</em>(2), 153–159. <a href="https://doi.org/10.1080/03637751003790444">https://doi.org/10.1080/03637751003790444</a></p>
+  <p>Opiłowski, R. (2020). Praktiken der Emotionalisierung im digitalen Kommunikationsraum. Vor dem Hintergrund von Medien und alternativen Öffentlichkeiten. <em>Linguistische Treffen in Wrocław, 17</em>, 211–222. <a href="https://doi.org/10.23817/lingtreff.17-17">https://doi.org/10.23817/lingtreff.17-17</a></p>
+  <p>Patel, A., &amp; Reinsch, L. (2003). Companies can apologize: Corporate apologies and legal liability. <em>Business Communication Quarterly, 66</em>(1), 9–25. <a href="https://doi.org/10.1177/108056990306600103">https://doi.org/10.1177/108056990306600103</a></p>
+  <p>Schramm, H., &amp; Wirth, W. (2006). Medien und Emotionen: Bestandsaufnahme eines vernachlässigten Forschungsfeldes aus medienpsychologischer Perspektive. <em>Medien &amp; Kommunikationswissenschaft, 54</em>(1), 25–55. <a href="https://doi.org/10.5771/1615-634x-2006-1-25">https://doi.org/10.5771/1615-634x-2006-1-25</a></p>
+</div>
+
+<!-- ========== ANHANG ========== -->
+<section class="anhang">
+<h2 id="anhang">Anhang</h2>
+<figure>
+  <img src="blog-anzeige.jpg" alt="Ganzseitige KFC-Anzeige: leerer Hühnchen-Eimer mit dem Schriftzug FCK, darunter die Entschuldigung „We're sorry“">
+  <figcaption><strong>Abbildung 1:</strong> Die Entschuldigung von KFC UK, erschienen am 23. Februar 2018 in The Sun und Metro (Agentur: Mother London)</figcaption>
+</figure>
+</section>
+
+<p class="foot"><a href="index.html">Übersicht</a><a href="simulator.html">Shitstorm-Simulator</a><a href="baukasten.html">Statement-Baukasten</a><a class="pdf-link-text" href="druckversion.pdf" download hidden>Druckversion (PDF)</a></p>
+<p class="ki">Website mit KI-Unterstützung erstellt (Claude von Anthropic).</p>
+</div>
+<script>
+{
+const b=document.getElementById('themeBtn'), r=document.documentElement, mq=matchMedia('(prefers-color-scheme: dark)');
+const cur=()=>r.dataset.theme||(mq.matches?'dark':'light');
+const SUN='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>';
+const MOON='<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.5 14.6A8.5 8.5 0 0 1 9.4 3.5a8.5 8.5 0 1 0 11.1 11.1z"/></svg>';
+const paint=()=>{const d=cur()==='dark';b.innerHTML=d?SUN:MOON;const l=d?'Helles Design':'Dunkles Design';b.setAttribute('aria-label',l+' einschalten');b.title=l;};
+b.addEventListener('click',()=>{const n=cur()==='dark'?'light':'dark';r.dataset.theme=n;try{localStorage.setItem('theme',n)}catch(e){}paint();});
+if(mq.addEventListener) mq.addEventListener('change',paint);
+paint();
+}
+</script>
+<script>
+/* Druckversion: Links nur zeigen, wenn druckversion.pdf existiert */
+fetch('druckversion.pdf',{method:'HEAD',cache:'no-store'}).then(r=>{
+  if(r.ok && !/text\/html/.test(r.headers.get('content-type')||'')) document.querySelectorAll('a[href="druckversion.pdf"]').forEach(a=>a.hidden=false);
+}).catch(()=>{});
+</script>
+</body>
+</html>
