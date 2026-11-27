@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>try{var t=localStorage.getItem("theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script>
+
+<title>Statement-Baukasten</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!--
+  INHALTE BEARBEITEN
+  Alle Fälle, Bausteine und Rückmeldungen stehen weiter unten im Skript im Block "const CASES = [...]".
+  Jeder Baustein hat: text (der Satz), ok (true = richtige Antwort), fb (Rückmeldung), tags (Merkmale nach Opiłowski).
+  Texte stehen zwischen "Anführungszeichen". Innerhalb eines Textes bitte nur „deutsche“ Anführungszeichen verwenden.
+-->
+<style>
+/* VOICE learning tool for a PR seminar: plain, collegial, a clear right answer with reasons
+   IDEA a press office desk: the case file on the left, the press release being drafted on the right
+   PICTURE the press release itself, filling sentence by sentence as correct blocks lock in
+   COLOUR white ground, ink, blog red, green/red for feedback, paper panels
+   TYPE Montserrat 800 + Inter, as on the rest of the site
+   LAYOUT laptop: case + current step left, sticky press release right; phone: case, step, release */
+:root{color-scheme:light dark;
+  --bg:light-dark(#ffffff,#141110);--ink:light-dark(#1b1b1b,#f1ece7);--mute:light-dark(#6d6a67,#a8a09a);
+  --red:light-dark(#A1151C,#e2363d);--paper:light-dark(#f5f1ec,#221d1b);--line:light-dark(#ddd5cd,#3a3330);
+  --ok:light-dark(#2f7d3b,#57b866);--okbg:light-dark(#eaf4ec,#1b2a1e);--no:light-dark(#A1151C,#e2363d);--nobg:light-dark(#fbecec,#2c1717);--sheet:light-dark(#ffffff,#1c1816)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:17px/1.6 Inter,system-ui,sans-serif;overflow-x:clip}
+a{color:var(--red)}
+.wrap{max-width:1200px;margin:0 auto;padding:clamp(20px,4vw,44px) max(4vw,16px) 40px}
+.top{display:flex;gap:16px;font:600 14px Inter,sans-serif;margin-bottom:18px}
+.top a{text-decoration:none}
+h1{font:800 clamp(30px,5vw,46px)/1.05 Montserrat,Inter,sans-serif;letter-spacing:-.02em;text-transform:uppercase;margin:0 0 10px}
+.intro{max-width:66ch;margin:0 0 20px}
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 18px}
+.tab{font:600 15px Inter,sans-serif;min-height:44px;padding:0 16px;border:1.5px solid var(--ink);background:var(--bg);color:var(--ink);cursor:pointer}
+.tab[aria-selected=true]{background:var(--ink);color:var(--bg)}
+.tab .d{color:var(--ok);font-weight:800;margin-left:6px}
+.tab[aria-selected=true] .d{color:#7fd88d}
+.tab:focus-visible,.opt:focus-visible,.btn:focus-visible{outline:3px solid var(--red);outline-offset:2px}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;align-items:start}
+.case{background:var(--paper);padding:20px 22px}
+.case h2{font:800 clamp(20px,2.4vw,24px)/1.2 Montserrat,Inter,sans-serif;text-transform:uppercase;margin:0 0 8px}
+.case p{margin:0 0 10px}
+.facts{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 0;padding:0;list-style:none}
+.facts li{font-size:14px;font-weight:600;background:var(--bg);border:1px solid var(--line);padding:3px 9px}
+.note{font-size:13px;color:var(--mute);margin:10px 0 0}
+.steps{display:flex;gap:6px;margin:18px 0 10px}
+.steps i{flex:1;height:6px;background:var(--line)}
+.steps i.done{background:var(--ok)}.steps i.cur{background:var(--ink)}
+.q{margin-top:4px}
+.q .k{font-size:14px;color:var(--mute);margin:0}
+.q h3{font:800 18px/1.3 Montserrat,Inter,sans-serif;margin:2px 0 12px}
+.opts{display:flex;flex-direction:column;gap:10px}
+.opt{display:block;width:100%;text-align:left;font:16px/1.5 Inter,sans-serif;color:var(--ink);background:var(--bg);border:1.5px solid var(--ink);padding:12px 14px;cursor:pointer;min-height:44px}
+.opt:hover:not(:disabled){background:var(--paper)}
+.opt.wrong{border-color:var(--no);background:var(--nobg);cursor:default;opacity:.75;text-decoration:line-through;text-decoration-color:var(--no)}
+.opt.right{border-color:var(--ok);background:var(--okbg);cursor:default}
+.fb{margin:12px 0 0;padding:12px 14px;border-left:5px solid var(--c);background:var(--b)}
+.fb.ok{--c:var(--ok);--b:var(--okbg)}.fb.no{--c:var(--no);--b:var(--nobg)}
+.fb b{display:block;font:800 14px Montserrat,Inter,sans-serif;text-transform:uppercase;color:var(--c);margin-bottom:2px}
+.fb p{margin:0}
+.btn{font:700 15px Inter,sans-serif;min-height:44px;padding:0 18px;border:1.5px solid var(--red);background:var(--red);color:#fff;cursor:pointer;margin-top:14px}
+.btn.sec{background:var(--bg);color:var(--ink);border-color:var(--ink)}
+.btn:hover{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.release{position:sticky;top:70px;background:var(--sheet);border:1px solid var(--line);box-shadow:0 1px 0 var(--line);padding:26px 26px 22px}
+.release .h{display:flex;justify-content:space-between;gap:12px;border-bottom:2px solid var(--ink);padding-bottom:8px;margin-bottom:14px;font:800 13px Montserrat,Inter,sans-serif;text-transform:uppercase}
+.release .h span:last-child{color:var(--mute);font-weight:600}
+.release h4{font:800 19px/1.25 Montserrat,Inter,sans-serif;margin:0 0 12px}
+.blk{margin:0 0 12px;padding-left:12px;border-left:3px solid var(--line);font-size:16px;line-height:1.55}
+.blk.filled{border-left-color:var(--ok)}
+.blk.new{animation:in .35s ease-out}
+.blk.empty{color:var(--mute);font-style:italic;font-size:14px}
+.blk .tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:5px}
+.tag{font:600 12px Inter,sans-serif;font-style:normal;background:var(--paper);color:var(--ink);padding:2px 8px}
+@keyframes in{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.result{margin-top:8px}
+.score{font:800 clamp(24px,3vw,30px)/1.1 Montserrat,Inter,sans-serif;text-transform:uppercase;margin:4px 0 10px}
+.score span{color:var(--red)}
+.real{background:var(--paper);padding:16px 18px;margin-top:14px}
+.real h3{font:800 15px Montserrat,Inter,sans-serif;text-transform:uppercase;color:var(--red);margin:0 0 6px}
+.real p{margin:0 0 10px}
+.real ul{margin:0 0 10px;padding-left:1.2em}
+.real .src{font-size:13px;color:var(--mute);margin:0}
+.orig{background:var(--bg);border-left:4px solid var(--red);padding:12px 14px;margin:4px 0 12px}
+.orig h4{font:800 13px Montserrat,Inter,sans-serif;text-transform:uppercase;margin:0 0 6px}
+.orig .on{font-size:14px;color:var(--mute);margin:0 0 6px}
+.orig ul{margin:0;padding-left:1.1em}
+.orig li{margin-bottom:4px;font-size:15px}
+.orig a{font-weight:600}
+.real .src a{color:var(--mute)}
+.feat{margin-top:16px}
+.feat h3{font:800 15px Montserrat,Inter,sans-serif;text-transform:uppercase;margin:0 0 6px}
+.feat ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 16px;font-size:15px}
+.feat li::before{content:"○ ";color:var(--mute)}
+.feat li.on::before{content:"● ";color:var(--red)}
+.feat li.on{font-weight:600}
+.foot{font-size:13px;color:var(--mute);margin-top:28px;max-width:85ch}
+.ki{font-size:12px;color:var(--mute);margin:8px 0 0}
+[hidden]{display:none!important}
+@media(prefers-reduced-motion:reduce){.blk.new{animation:none}}
+@media(max-width:860px){.grid{grid-template-columns:minmax(0,1fr)}.release{position:static}}
+@media(max-width:480px){.feat ul{grid-template-columns:minmax(0,1fr)}.release{padding:18px 16px}}
+
+/* Navigation (auf allen Seiten gleich) */
+.site-nav{position:sticky;top:0;z-index:60;background:var(--bg);border-bottom:1px solid var(--line)}
+.site-nav .in{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:4px 20px;padding:0 max(4vw,16px);min-height:56px}
+.site-nav .home{font:800 15px/1.2 Montserrat,Inter,sans-serif;text-transform:uppercase;color:var(--ink);text-decoration:none;margin-right:auto;white-space:nowrap}
+.site-nav .home .s{display:none}
+.site-nav a.l{font:600 15px Inter,system-ui,sans-serif;color:var(--ink);text-decoration:none;padding:8px 0;border-bottom:2px solid transparent;white-space:nowrap}
+.site-nav a.l:hover{border-bottom-color:var(--line)}
+.site-nav a.l[aria-current=page]{color:var(--red);border-bottom-color:var(--red)}
+.site-nav a:focus-visible{outline:3px solid var(--red);outline-offset:3px}
+.theme-btn{flex:none;width:40px;height:40px;border-radius:50%;border:1.5px solid var(--ink);background:var(--bg);color:var(--ink);display:grid;place-items:center;cursor:pointer;padding:0;margin-left:4px}
+.theme-btn:hover{background:var(--ink);color:var(--bg)}
+.theme-btn:focus-visible{outline:3px solid var(--red);outline-offset:2px}
+.theme-btn svg{width:18px;height:18px;display:block}
+@media(max-width:600px){.site-nav .home .f{display:none}.site-nav .home .s{display:inline}.site-nav .in{gap:4px 14px}.site-nav a.l{font-size:14px}}
+@media print{.site-nav{display:none}}
+.ki+.ki{margin-top:2px}
+.ki a{color:inherit}
+.ki a:hover{color:var(--red)}
+</style>
+</head>
+<body>
+<nav class="site-nav" aria-label="Seiten"><div class="in"><a class="home" href="index.html"><span class="f">Emotionalisierung in der PR</span><span class="s">Start</span></a><a class="l" href="blog.html">Blog</a><a class="l" href="simulator.html">Simulator</a><a class="l" href="baukasten.html" aria-current="page">Baukasten</a><button class="theme-btn" id="themeBtn" type="button"></button></div></nav>
+
+<div class="wrap">
+    <h1>Statement-Baukasten</h1>
+  <p class="intro">Hier stellst du für drei Krisen jeweils ein Statement zusammen, Satz für Satz. Die Fälle haben sich wirklich so ereignet, nur Namen und Orte sind geändert. Bei jedem Schritt gibt es eine Antwort, die nach der Forschung zur Krisenkommunikation am besten passt, und wenn du danebenliegst, erfährst du, warum. Am Ende verrät die Auflösung, welcher Fall dahintersteckt und wie das Unternehmen damals tatsächlich reagiert hat.</p>
+
+  <div class="tabs" role="tablist" id="tabs"></div>
+
+  <div class="grid">
+    <div>
+      <section class="case" id="case"></section>
+      <div class="steps" id="steps" aria-hidden="true"></div>
+      <section id="stage" aria-live="polite"></section>
+    </div>
+    <aside class="release" id="release" aria-label="Entwurf der Pressemitteilung"></aside>
+  </div>
+
+  <p class="foot">Teil des Seminarbeitrags „Emotionalisierung in der PR“. Die richtigen Antworten stützen sich auf Coombs (2007), Grappi &amp; Romani (2015), Jin, Pang &amp; Cameron (2012), Berger &amp; Milkman (2012), Patel &amp; Reinsch (2003) und Opiłowski (2020). Die Bausteine sind für dieses Lernspiel formuliert und keine Originalzitate. Die Zuordnung der Merkmale nach Opiłowski zu den Bausteinen ist eine eigene Einordnung. Patel &amp; Reinsch (2003) beziehen sich auf US-Recht. Namen von Unternehmen, Produkten und Orten in den Fallbeschreibungen sind erfunden.</p>
+  <p class="ki">Website mit KI-Unterstützung erstellt (Claude von Anthropic).</p>
+<p class="ki">Mehr Texte von mir: <a href="https://substack.com/@crossstitchessays" target="_blank" rel="noopener">Cross-Stitch-Essays auf Substack</a></p>
+</div>
+
+<script>
+{
+const FEATURES=['Wortwahl','Indirekte Mittel','Bild und Ton','Personalisierung und Dramatisierung','Art der Emotion','Das Nicht-Gesagte','Gewichtung'];
+const SLOTS=['Einstieg','Verantwortung','Information für Betroffene','Maßnahme','Ton und Abschluss'];
+const TYPES=['Opferkrise','Unfall','Vermeidbare Krise'];
+
+const CASES=[
+{
+  tab:"Fall 1: Schmerzmittel",
+  title:"Vergiftete Kapseln",
+  company:"Nordal Pharma",
+  headline:"Nordal Pharma zu den Todesfällen in der Region Hallberg",
+  intro:["In der Region Hallberg sterben innerhalb von drei Tagen sieben Menschen, nachdem sie Kapseln des rezeptfreien Schmerzmittels Nordal Extra eingenommen haben. Ermittler finden Zyanid in Packungen aus verschiedenen Apotheken und Supermärkten.",
+         "Alles deutet darauf hin, dass die Kapseln erst nach der Auslieferung im Handel manipuliert wurden. Der Täter ist unbekannt. Niemand weiß, ob noch weitere Packungen betroffen sind, und in der Bevölkerung macht sich Angst breit."],
+  facts:["7 Todesfälle","Täter unbekannt","Manipulation im Handel","große Verunsicherung"],
+  type:0,
+  typeFb:["Die Packungen wurden von außen manipuliert, das Unternehmen ist also selbst Opfer eines Verbrechens. Coombs (2007) zählt Produktmanipulation deshalb zu den Opferkrisen.",
+          "Von einem Unfall spräche man bei einem Fehler im eigenen Betrieb, etwa in der Produktion. Hier hat aber jemand von außen die Kapseln vergiftet.",
+          "Vermeidbar wäre die Krise, wenn das Unternehmen bewusst ein Risiko in Kauf genommen oder Regeln verletzt hätte. Dafür gibt es keine Hinweise."],
+  slots:[
+    [{text:"Wir sind tief erschüttert über den Tod von sieben Menschen in der Region Hallberg. Unser Mitgefühl gilt ihren Familien und Angehörigen.",ok:true,tags:["Wortwahl","Art der Emotion"],
+      fb:"Der Einstieg gilt den Betroffenen, und so gehört es sich. Anteilnahme wird in jeder Krise erwartet und ist noch kein Schuldeingeständnis (Coombs, 2007, S. 165). Die Gefühlswörter verbinden, statt jemanden auszugrenzen."},
+     {text:"Die Ereignisse der letzten Tage sind für Nordal Pharma und unsere 4.000 Mitarbeitenden ein schwerer Schlag.",ok:false,
+      fb:"Hier steht das Unternehmen im Mittelpunkt und nicht die Menschen, die gestorben sind. Bei Todesfällen wirkt das schnell selbstbezogen."},
+     {text:"Seit über 40 Jahren steht Nordal für Sicherheit und Qualität, auf die sich Millionen Menschen verlassen.",ok:false,
+      fb:"Wer mit Eigenlob beginnt, lenkt von den Opfern ab. Coombs (2007, S. 172) sieht solches Bolstering nur als Ergänzung zu den eigentlichen Reaktionen und nicht als deren Ersatz."}],
+    [{text:"Wir übernehmen die volle Verantwortung für diese Todesfälle und bitten um Entschuldigung.",ok:false,
+      fb:"Das geht zu weit, denn nach allem, was bekannt ist, trägt das Unternehmen keine Schuld. Eine Schuldübernahme wäre sachlich falsch und rechtlich riskant (Patel & Reinsch, 2003). Außerdem kann sie die Lage schlimmer erscheinen lassen, als sie ist (Coombs, 2007)."},
+     {text:"Nach allem, was wir bisher wissen, wurden die betroffenen Packungen erst nach der Auslieferung im Handel manipuliert. Wir unterstützen Polizei und Behörden mit allen Mitteln.",ok:true,tags:[],
+      fb:"Bei einer Opferkrise genügt es, den Stand der Dinge zu nennen und zu zeigen, dass das Unternehmen mit den Behörden zusammenarbeitet. So bleibt es ehrlich, ohne Schuld zu übernehmen oder sie von sich zu weisen (Coombs, 2007)."},
+     {text:"Unsere Produkte sind sicher. Verantwortlich ist allein ein Krimineller, nicht unser Unternehmen.",ok:false,
+      fb:"Solange niemand weiß, ob noch weitere Packungen vergiftet sind, kann das Unternehmen nicht behaupten, das Produkt sei sicher. Die Abwehr wirkt kalt und macht den Menschen eher noch mehr Angst."}],
+    [{text:"Bitte nehmen Sie bis auf Weiteres keine Nordal-Extra-Kapseln ein. Wir rufen alle Packungen bundesweit zurück. Unsere kostenlose Hotline ist rund um die Uhr erreichbar, bereits gekaufte Kapseln tauschen wir kostenlos gegen Tabletten um.",ok:true,tags:["Gewichtung"],
+      fb:"Wenn akute Gefahr besteht, müssen die Menschen als Erstes erfahren, wie sie sich schützen können (Coombs, 2007). Eine klare Anweisung hilft auch gegen die Angst, die Jin et al. (2012) als typische erste Emotion in Krisen beschreiben."},
+     {text:"Wir prüfen derzeit gemeinsam mit den Behörden, ob weitere Maßnahmen erforderlich sind.",ok:false,
+      fb:"Wer das Mittel zu Hause hat, weiß nach diesem Satz immer noch nicht, was zu tun ist. Gerade die Ungewissheit macht eine Krise belastend, deshalb brauchen Betroffene konkrete Informationen (Coombs, 2007, S. 165)."},
+     {text:"Weitere Informationen veröffentlichen wir, sobald die Ermittlungen abgeschlossen sind.",ok:false,
+      fb:"Bis die Ermittlungen abgeschlossen sind, können weitere Menschen zu Schaden kommen. Wer so lange schweigt, wirkt außerdem untätig."}],
+    [{text:"Wir sind überzeugt, dass Nordal Extra auch in Zukunft das Vertrauen der Menschen verdient.",ok:false,
+      fb:"Hier lobt sich das Unternehmen selbst, statt etwas zu unternehmen. Die Öffentlichkeit will aber wissen, was getan wird, damit so etwas nicht wieder passiert (Coombs, 2007)."},
+     {text:"Wir werden den Vorfall gründlich aufarbeiten.",ok:false,
+      fb:"Das klingt nach Handeln, bleibt aber vage. Eine Maßnahme überzeugt erst, wenn man nachprüfen kann, ob sie auch umgesetzt wurde."},
+     {text:"Nordal Extra kommt erst wieder in den Handel, wenn eine neue, fälschungssichere Verpackung bereitsteht.",ok:true,tags:[],
+      fb:"Eine konkrete Maßnahme zeigt, dass das Unternehmen Konsequenzen zieht, auch ohne eigene Schuld. Betroffene wollen wissen, was getan wird, damit sich so etwas nicht wiederholt, und solche Korrekturen beruhigen sie (Coombs, 2007, S. 165)."}],
+    [{text:"Kopfschmerzen bereitet uns diese Situation auch. Wir kümmern uns darum.",ok:false,tags:["Indirekte Mittel"],
+      fb:"Wenn Menschen gestorben sind, verbietet sich jeder Witz. Was bei KFC funktioniert hat, wäre hier respektlos."},
+     {text:"Wir informieren Sie weiter, sobald es neue Erkenntnisse gibt.",ok:true,tags:[],
+      fb:"Der Satz ist sachlich und verbindlich. Wenn Menschen Angst haben und es Tote gibt, helfen Ruhe und Verlässlichkeit mehr als große Worte."},
+     {text:"Wir werden nicht ruhen, bis dieses dunkle Kapitel abgeschlossen ist, und stehen wie ein Fels an Ihrer Seite.",ok:false,tags:["Personalisierung und Dramatisierung"],
+      fb:"Das ist zu pathetisch. Wenn das Gefühl die ganze Botschaft beherrscht, geht die Information unter (Opiłowski, 2020, S. 215; Schramm & Wirth, 2006, S. 40)."}]
+  ],
+  real:{name:"Tylenol-Morde, Chicago 1982",
+    text:["1982 starben im Raum Chicago sieben Menschen an Tylenol-Kapseln, die mit Zyanid vergiftet worden waren. Der Täter wurde nie gefasst. Johnson & Johnson stellte schnell fest, dass die Kapseln erst nach Verlassen der Fabrik manipuliert worden waren."],
+    did:["warnte öffentlich davor, Tylenol-Kapseln weiter einzunehmen,","rief bundesweit rund 31 Millionen Packungen zurück,","richtete eine Hotline ein und bot an, Kapseln gegen Tabletten zu tauschen,","brachte Tylenol wenige Wochen später in einer dreifach versiegelten Verpackung zurück."],
+    outcome:"Der Marktanteil von Tylenol fiel nach den Todesfällen von 35 % auf 7 % und lag Ende 1983 wieder bei 35 %. Die Reaktion gilt bis heute als Lehrbuchbeispiel für Krisenkommunikation und wird an Business Schools unterrichtet. Fälschungssichere Verpackungen wurden danach zum Standard für rezeptfreie Medikamente.",
+    orig:[["Fortune, Oktober 1982: „The Fight to Save Tylenol“ – Reportage aus dem Unternehmen während der Krise","https://fortune.com/article/the-fight-to-save-tylenol-fortune-1982/"]],
+    origNote:"Die Pressemitteilungen von 1982 sind online nicht erhalten. Die Fortune-Reportage von damals kommt dem am nächsten.",
+    src:[["Wharton Knowledge: Tylenol and the Legacy of J&J’s James Burke","https://knowledge.wharton.upenn.edu/article/tylenol-and-the-legacy-of-jjs-james-burke/"],["PBS NewsHour","https://www.pbs.org/newshour/health/tylenol-murders-1982"],["Retail Brew","https://retailbrew.com/stories/2022/10/13/total-recall-how-the-tylenol-murders-of-1982-ushered-in-tamper-resistant-packaging"],["Pharmacy Times","https://www.pharmacytimes.com/view/changes-in-the-law-result-from-otc-drug-product-tampering"],["HeinOnline","https://home.heinonline.org/blog/2020/11/poison-on-the-shelves-federal-product-tampering-laws-and-the-chicago-tylenol-murders/"]]}
+},
+{
+  tab:"Fall 2: Netzausfall",
+  title:"Ein Tag ohne Netz",
+  company:"Linova Mobilfunk",
+  headline:"Linova Mobilfunk zur Netzstörung",
+  intro:["An einem Mittwochmittag fällt beim Mobilfunkanbieter Linova das Netz aus. Rund acht Millionen Kundinnen und Kunden können fast 24 Stunden lang weder telefonieren noch mobil surfen.",
+         "Ursache ist ein Fehler bei der Umstellung auf eine neue Kundendatenbank, die ein externer Technikdienstleister betreibt. Verletzt wird niemand. Der Ärger ist trotzdem groß: In den sozialen Medien sammeln sich zahlreiche wütende, teils beleidigende Beiträge, und die Presse greift das Thema auf."],
+  facts:["8 Mio. Betroffene","knapp 24 Stunden","technischer Fehler","keine Verletzten"],
+  type:1,
+  typeFb:["Eine Opferkrise wäre es bei einer äußeren Ursache wie Unwetter oder Sabotage. Die Systemumstellung lag aber im Verantwortungsbereich des Anbieters, auch wenn ein Dienstleister beteiligt war.",
+          "Ein unbeabsichtigter technischer Fehler zählt bei Coombs (2007) zu den Unfällen. Das Publikum sieht beim Unternehmen dann nur eine geringe Verantwortung.",
+          "Nichts deutet darauf hin, dass bewusst Risiken eingegangen oder Regeln verletzt wurden. Vermeidbar wäre die Krise bei Coombs erst bei menschlichem Versagen oder Fehlverhalten."],
+  slots:[
+    [{text:"Für uns als Netzbetreiber ist ein solcher Ausfall natürlich besonders unangenehm.",ok:false,
+      fb:"Hier spricht das Unternehmen über sich selbst, obwohl doch die Kundschaft das Problem hatte."},
+     {text:"Linova steht seit Jahren für eines der zuverlässigsten Netze des Landes.",ok:false,
+      fb:"Mitten im Ausfall wirkt Eigenlob fast wie Hohn. Coombs (2007, S. 172) sieht es nur als Ergänzung zu den eigentlichen Reaktionen."},
+     {text:"Viele von Ihnen konnten seit gestern Mittag weder telefonieren noch surfen. Wir wissen, wie ärgerlich das ist, im Job wie im Alltag.",ok:true,tags:["Wortwahl","Art der Emotion"],
+      fb:"Der Einstieg nimmt den Ärger der Kundschaft ernst und spricht ihn direkt an. Botschaften, die die Gefühlslage des Publikums treffen, überzeugen eher (Nabi, 2010, S. 157)."}],
+    [{text:"Wir haben auf ganzer Linie versagt und übernehmen die volle Verantwortung für sämtliche Folgen, die Ihnen entstanden sind.",ok:false,
+      fb:"Für einen Unfall geht das zu weit. Eine volle Entschuldigung bringt hier keinen zusätzlichen Nutzen und kann die Panne schlimmer erscheinen lassen, als sie ist (Coombs, 2007). Die Formulierung „sämtliche Folgen“ wäre außerdem rechtlich riskant (Patel & Reinsch, 2003)."},
+     {text:"Das tut uns leid. Ursache war ein technischer Fehler bei der Umstellung auf ein neues System. Unsere Technikteams arbeiten mit Hochdruck an der Behebung.",ok:true,tags:["Das Nicht-Gesagte"],
+      fb:"Bedauern und eine kurze Erklärung der Umstände sind genau das, was Coombs (2007) bei Unfällen ohne Vorgeschichte empfiehlt. Wie KFC, das DHL nicht erwähnte, nennt auch Linova den Dienstleister nicht und steht selbst gegenüber der eigenen Kundschaft gerade."},
+     {text:"Der Fehler liegt nicht bei Linova, sondern bei unserem Dienstleister, der die neue Datenbank betreibt.",ok:false,tags:["Art der Emotion"],
+      fb:"Hier wird die Schuld weitergeschoben. Die Kundschaft hat aber einen Vertrag mit Linova und nicht mit einem Dienstleister, den sie gar nicht kennt. Einen Sündenbock zu benennen zählt bei Coombs (2007, S. 170) zu den Abwehrstrategien."}],
+    [{text:"Wir arbeiten an einer Lösung.",ok:false,
+      fb:"Das bleibt zu vage. Betroffene wollen wissen, was sie jetzt selbst tun können und wann es weitergeht."},
+     {text:"Bitte sehen Sie von Anrufen bei unserer Hotline ab.",ok:false,
+      fb:"Als einzige Information wirkt das abweisend. Wer keine Hilfe und keinen Zeitplan bekommt, macht seinem Ärger woanders Luft, zum Beispiel online."},
+     {text:"Ein Tipp für den Moment: Wenn Sie Ihr Gerät auf 2G umstellen, können Sie in vielen Regionen wieder telefonieren. Den aktuellen Stand veröffentlichen wir stündlich auf unserer Website und in unseren Social-Media-Kanälen.",ok:true,tags:["Gewichtung"],
+      fb:"Es gibt konkrete Hilfe und regelmäßige Updates. So begleitet die Information das Bedauern, statt dahinter zu verschwinden (Opiłowski, 2020, S. 215)."}],
+    [{text:"Als Entschuldigung schreiben wir allen Vertragskundinnen und -kunden drei Tage Grundgebühr gut. Außerdem lassen wir unser Netz vollständig überprüfen, damit sich ein solcher Ausfall nicht wiederholt.",ok:true,tags:[],
+      fb:"Eine kleine, konkrete Wiedergutmachung und eine Maßnahme, die sich überprüfen lässt, zeigen, dass das Unternehmen den Ärger ernst nimmt, ohne die Panne größer zu machen, als sie ist."},
+     {text:"Wir sind sicher, dass Linova auch künftig das zuverlässigste Netz des Landes bleibt.",ok:false,
+      fb:"Statt etwas zu tun, lobt sich das Unternehmen selbst, und nach einem Tag ohne Netz glaubt das ohnehin niemand."},
+     {text:"Ob und in welcher Form es eine Entschädigung geben wird, prüfen wir derzeit.",ok:false,
+      fb:"Wer die Kundschaft hinhält, wirkt kleinlich und hält das Thema am Leben. Wenn es eine Entschädigung gibt, sollte sie schnell und klar angekündigt werden."}],
+    [{text:"Mal ehrlich: Einen Tag ohne Handy hat noch jeder überlebt.",ok:false,tags:["Indirekte Mittel"],
+      fb:"Der Witz geht auf Kosten der Betroffenen und spielt den Ärger herunter. Humor kann bei einem harmlosen Unfall funktionieren, aber nur mit klarem Bedauern und nicht gegen die Kundschaft."},
+     {text:"Danke für Ihre Geduld und dafür, dass Sie uns in den letzten Stunden nicht nur Ihre Meinung, sondern auch so manchen guten Witz geschickt haben. Wir sind wieder für Sie da.",ok:true,tags:["Indirekte Mittel","Art der Emotion"],
+      fb:"Bei einem Unfall ohne Verletzte und ohne Angst lässt ein leichter Ton Raum, solange das Bedauern klar bleibt, wie bei KFC. Belustigung ist wie Ärger ein aktivierendes Gefühl und erhöht die Bereitschaft, Inhalte zu teilen (Berger & Milkman, 2012, S. 200)."},
+     {text:"Dies ist ein schwarzer Tag in der Geschichte unseres Unternehmens, den wir nie vergessen werden.",ok:false,tags:["Personalisierung und Dramatisierung"],
+      fb:"Das ist übertrieben, schließlich wurde niemand verletzt. Die Dramatisierung lässt die Panne größer wirken, als sie ist, und rückt wieder das Unternehmen in den Mittelpunkt."}]
+  ],
+  real:{name:"Netzausfall bei O2 in Großbritannien, Juli 2012",
+    text:["Im Juli 2012 fiel das Netz von O2 in Großbritannien und Irland für rund 24 Stunden aus, betroffen waren fast acht Millionen Kundinnen und Kunden. Als Ursache galt eine neue Datenbank des Dienstleisters Ericsson."],
+    did:["Das Social-Media-Team antwortete auf wütende und beleidigende Tweets mit Humor, was viel Lob bekam.","CEO Ronan Dunne entschuldigte sich öffentlich im Fernsehen und nannte den Ausfall peinlich.","In der offiziellen Erklärung vom 18. Juli nannte O2 als Ursache einen beispiellosen Softwarefehler und sprach nur von einem zentralen Zulieferer, ohne Ericsson beim Namen zu nennen.","Zugleich kündigte O2 eine Entschädigung an: 10 % der Monatsgebühr, etwa drei Tage, plus einen Gutschein."],
+    outcome:"Kritik gab es dafür, dass die Ursache lange vage blieb und die Entschuldigung spät kam. In einer YouGov-Umfrage bemängelten 57 % der betroffenen Kundinnen und Kunden die Kommunikation, zugleich hielten 71 % O2 weiterhin für ein gutes Netz.",
+    orig:[["O2-Erklärung vom 18. Juli 2012: Ursache und Entschädigung","https://news.virginmediao2.co.uk/archive/o2-network-coverage-disruption-update-18th-july/"],["O2-Erklärung vom 23. August 2012: „Making it up to our customers“","https://news.virginmediao2.co.uk/archive/o2-network-coverage-disruption-update-23rd-august/"]],
+    src:[["City A.M.: O2-Chef entschuldigt sich","https://cityam.com/?p=626110"],["IoT Now","https://www.iot-now.com/2012/07/17/6496-o2-uks-major-network-outage-is-put-down-to-hlr-systems-failure/"],["YouGov","https://yougov.co.uk/news/2012/07/16/how-o2-outage-hit-brand/"],["The Register","https://www.theregister.co.uk/2012/07/18/o2_outage_comp/"],["HuffPost UK","https://huffingtonpost.co.uk/amp/entry/o2-network-problems-twitter_n_1667720"],["MoneySavingExpert","https://blog.moneysavingexpert.com/news/2012/07/o2-customers-to-get-compensation-after-last-weeks-outage"],["Mobile Network Comparison","https://mobilenetworkcomparison.org.uk/?p=2935"]]}
+},
+{
+  tab:"Fall 3: Kreuzfahrt",
+  title:"Havarie vor Calvara",
+  company:"Marevia Kreuzfahrten",
+  headline:"Marevia Kreuzfahrten zum Unglück der Marevia Stella",
+  intro:["Das Kreuzfahrtschiff Marevia Stella mit über 4.000 Menschen an Bord läuft nachts vor der Insel Calvara auf einen Felsen und kentert. 32 Menschen sterben.",
+         "Schnell wird bekannt: Der Kapitän ist ohne Genehmigung von der geplanten Route abgewichen, um nah an der Insel vorbeizufahren. Die Evakuierung begann erst rund eine Stunde nach der Kollision und verlief chaotisch. Bilder des Schiffs in Schräglage gehen um die Welt."],
+  facts:["32 Todesopfer","Route eigenmächtig geändert","späte Evakuierung","weltweite Berichterstattung"],
+  type:2,
+  typeFb:["Das Schiff ist nicht durch äußere Einwirkung verunglückt, deshalb kommt eine Opferkrise nicht in Frage.",
+          "Von einem Unfall spricht Coombs (2007) bei technischen Defekten. Hier hat aber ein Mensch eine falsche Entscheidung getroffen, und menschliches Versagen zählt bei ihm zu den vermeidbaren Krisen.",
+          "Menschliches Versagen eines Mitarbeiters macht die Krise bei Coombs (2007) vermeidbar. In dieser Gruppe schreibt das Publikum dem Unternehmen am meisten Schuld zu, und der Ruf ist am stärksten bedroht."],
+  slots:[
+    [{text:"Dies ist der schwerste Tag in der Geschichte von Marevia. Auch für uns ist das ein Albtraum.",ok:false,tags:["Personalisierung und Dramatisierung"],
+      fb:"Wer bei Todesopfern über das eigene Leid spricht, klingt schnell wie BP-Chef Tony Hayward mit seinem „I'd like my life back“."},
+     {text:"Wir trauern um die Menschen, die beim Unglück der Marevia Stella ihr Leben verloren haben. Unsere Gedanken sind bei ihren Familien, bei den Verletzten und bei allen, die diese Nacht an Bord erleben mussten.",ok:true,tags:["Wortwahl","Art der Emotion","Personalisierung und Dramatisierung"],
+      fb:"Der Einstieg drückt Trauer und Anteilnahme aus und richtet sich konkret an die Betroffenen. Bei einer Krise mit Todesopfern ist das der einzig angemessene Anfang."},
+     {text:"Marevia befördert seit über 60 Jahren sicher Millionen Gäste über die Weltmeere.",ok:false,
+      fb:"In diesem Moment wirkt Eigenlob zynisch. Coombs (2007, S. 172) sieht es nur als Ergänzung zu den eigentlichen Reaktionen."}],
+    [{text:"Erste Erkenntnisse deuten auf schweres menschliches Versagen des Kapitäns hin, der eigenmächtig und entgegen unseren Vorschriften gehandelt hat.",ok:false,tags:["Art der Emotion"],
+      fb:"Damit wird die Schuld auf einen Einzelnen geschoben. Für die Öffentlichkeit ist aber die Reederei verantwortlich, die den Kapitän eingesetzt hat. In der Studie von Grappi & Romani (2015) wirkten Ausreden bei einer vermeidbaren Krise nicht besser als Schweigen."},
+     {text:"Wir bedauern zutiefst, was geschehen ist.",ok:false,tags:["Das Nicht-Gesagte"],
+      fb:"Bedauern ohne Schuldeingeständnis ist rechtlich vorsichtiger (Patel & Reinsch, 2003), reicht hier aber nicht aus. Bei vermeidbaren Krisen empfiehlt Coombs (2007) in jedem Fall Strategien, die Verantwortung übernehmen."},
+     {text:"Das Unglück hätte nicht passieren dürfen. Als Reederei tragen wir die Verantwortung für alles, was an Bord unserer Schiffe geschieht. Wir bitten alle Betroffenen um Entschuldigung.",ok:true,tags:["Wortwahl","Art der Emotion"],
+      fb:"Bei einer vermeidbaren Krise mit Todesopfern passt nur die volle Entschuldigung. In der Studie von Grappi & Romani (2015), die genau diesen Fall untersuchte, senkte sie die Wut und stärkte das Mitgefühl, Leugnen und Ausreden dagegen nicht."}],
+    [{text:"Für Angehörige haben wir eine rund um die Uhr erreichbare Hotline eingerichtet. Alle Gäste werden auf unsere Kosten untergebracht und nach Hause gebracht. Unsere Teams vor Ort helfen bei allen Fragen.",ok:true,tags:["Gewichtung"],
+      fb:"Zuerst kommen die konkreten Bedürfnisse der Betroffenen, alles andere hat Zeit (Coombs, 2007, S. 165)."},
+     {text:"Zu den genauen Abläufen an Bord können wir uns wegen der laufenden Ermittlungen nicht äußern.",ok:false,
+      fb:"Das mag rechtlich nachvollziehbar sein, beantwortet aber keine einzige Frage der Angehörigen. Als einzige Information wirkt es abweisend."},
+     {text:"Weitere Informationen erhalten Sie über Ihr Reisebüro.",ok:false,
+      fb:"Damit reicht das Unternehmen die Verantwortung weiter, dabei brauchen Angehörige eine direkte Anlaufstelle bei der Reederei."}],
+    [{text:"Unsere Sicherheitsverfahren entsprechen internationalen Standards und gehen teilweise sogar darüber hinaus.",ok:false,
+      fb:"Während Menschen gestorben sind, wirkt Eigenlob wie eine Rechtfertigung und lenkt von der Verantwortung ab."},
+     {text:"Wir werden alle Betroffenen entschädigen, unabhängig von Gerichtsverfahren, und unterstützen eine unabhängige Untersuchung, deren Ergebnisse wir veröffentlichen.",ok:true,tags:[],
+      fb:"Entschädigung gehört bei Coombs (2007, S. 172) zu den Rebuild-Strategien, die er für vermeidbare Krisen empfiehlt. Die unabhängige Untersuchung zeigt zusätzlich, dass das Unternehmen nichts verbergen will."},
+     {text:"Über Entschädigungen entscheiden die zuständigen Gerichte.",ok:false,
+      fb:"Der Verweis auf Gerichte wirkt, als wolle sich das Unternehmen drücken, und hält die Wut am Leben."}],
+    [{text:"Das Meer hat uns an diesem Abend auf grausame Weise unsere Grenzen gezeigt.",ok:false,tags:["Das Nicht-Gesagte","Personalisierung und Dramatisierung"],
+      fb:"Der Satz macht die Natur zur Ursache, obwohl ein Mensch die Route geändert hat. Genau hier hilft die Kontrollfrage nach dem Nicht-Gesagten: Was fehlt? (Opiłowski, 2020, S. 220)."},
+     {text:"Eines ist sicher: Wir sitzen jetzt alle im selben Boot.",ok:false,tags:["Indirekte Mittel"],
+      fb:"Bei Todesopfern ist ein Wortspiel undenkbar, denn Humor setzt voraus, dass niemand ernsthaft zu Schaden gekommen ist."},
+     {text:"Wir werden die Angehörigen und alle Betroffenen auf diesem Weg begleiten, so lange sie uns brauchen.",ok:true,tags:["Art der Emotion"],
+      fb:"Der Satz ist ruhig und verbindlich und richtet sich an die Betroffenen. Das Gefühl begleitet die Information, statt sie zu überdecken."}]
+  ],
+  real:{name:"Costa Concordia, Giglio, Januar 2012",
+    text:["Im Januar 2012 lief die Costa Concordia vor der italienischen Insel Giglio auf Grund, nachdem der Kapitän von der genehmigten Route abgewichen war. 32 Menschen starben."],
+    did:["Costa Crociere machte schon in den ersten Tagen den Kapitän verantwortlich. Der CEO sprach von menschlichem Versagen und einer Initiative entgegen den Regeln der Reederei.","Die Reederei betonte, ihre Verfahren entsprächen internationalen Standards und gingen teils darüber hinaus.","Die Muttergesellschaft Carnival verschickte parallel Statements mit Beileid und Hotline-Nummern für Angehörige und kündigte eine Überprüfung der Sicherheitsverfahren aller ihrer Reedereien an.","Zwei Wochen später bot Costa unverletzten Passagieren je 11.000 Euro plus Erstattung an, unter der Bedingung, auf weitere Klagen zu verzichten."],
+    outcome:"Krisenexperten kritisierten die Reaktion deutlich. Grappi & Romani (2015) nutzten genau diesen Fall für ihre Studie: In ihrem Experiment führte eine volle Entschuldigung zu weniger Wut und mehr Mitgefühl als keine Stellungnahme, während Leugnen und Ausreden gegenüber dem Schweigen keinen messbaren Vorteil brachten.",
+    orig:[["Costa-Statement zum „significant human error“ des Kapitäns, im Wortlaut zitiert bei Travel Weekly","https://travelweekly.co.uk/news/costa-blames-captain-for-concordia-disaster"],["Carnival, 14. Januar 2012: erstes Statement mit Hotline-Nummern für Angehörige","https://www.prnewswire.com/news-releases/carnival-corporation--plc-statement-regarding-costa-concordia-137351873.html"],["Carnival-CEO Micky Arison, 17. Januar 2012","https://www.prnewswire.com/news-releases/carnival-corporation--plc-chairman-and-ceo-statement-regarding-costa-concordia-137518843.html"],["Costa und Carnival, 18. Januar 2012: Unterstützung für Passagiere und Crew","https://www.prnewswire.com/news-releases/costa-cruises-and-carnival-corporation--plc-reiterate-commitment-to-support-costa-concordia-passengers-and-crew-137618773.html"],["Carnival, 19. Januar 2012: Überprüfung der Sicherheitsverfahren","https://www.prnewswire.com/news-releases/carnival-corporation--plc-announces-comprehensive-audit-and-review-of-safety-and-emergency-response-across-all-its-cruise-lines-137707478.html"]],
+    src:[["The Drum: Krisenberater zu Costas Schuldzuweisung","https://www.thedrum.com/opinion/2012/01/16/costa-cruises-adopts-brave-crisis-communication-strategy"],["gCaptain / Dow Jones","https://gcaptain.com/cruise-line-blames-captain-costa"],["IBTimes","https://ibtimes.com/cruise-ship-sinking-captain-veered-unapproved-course-395936"],["Irish Times","https://www.irishtimes.com/news/costa-passengers-offered-11-000-1.453194"],["RTÉ","https://www.rte.ie/news/2012/0127/311579-italy"],["Christian Science Monitor / Reuters","https://m.csmonitor.com/World/Latest-News-Wires/2012/0119/Costa-Concordia-owner-offers-refunds-but-gets-low-marks-for-response"],["Fox News / Reuters","https://www.foxnews.com/travel/carnival-fails-crisis-101-in-costa-response.amp"]]}
+}
+];
+
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+/* state per case: step (0 = Krisentyp, 1..5 = Bausteine, 6 = fertig), tried options per step, first-try hits */
+const ST=CASES.map(()=>({step:0,tried:{},first:0,picked:{}}));
+let cur=0, fresh=null;
+
+const renderTabs=()=>{
+  $('tabs').innerHTML=CASES.map((c,i)=>`<button class="tab" role="tab" type="button" id="tab-${i}" aria-selected="${i===cur}">${esc(c.tab)}${ST[i].step===6?'<span class="d" aria-label="abgeschlossen">✓</span>':''}</button>`).join('');
+  CASES.forEach((_,i)=>$('tab-'+i).addEventListener('click',()=>{cur=i;render()}));
+};
+const renderCase=()=>{
+  const c=CASES[cur];
+  $('case').innerHTML=`<h2>${esc(c.title)}</h2>${c.intro.map(p=>`<p>${esc(p)}</p>`).join('')}<ul class="facts">${c.facts.map(f=>`<li>${esc(f)}</li>`).join('')}</ul><p class="note">Namen und Orte sind erfunden, der Fall selbst ist echt. Welcher es ist, verrät die Auflösung am Ende.</p>`;
+};
+const renderSteps=()=>{
+  const s=ST[cur].step;
+  $('steps').innerHTML=Array.from({length:6},(_,i)=>`<i class="${i<s?'done':i===s?'cur':''}"></i>`).join('');
+};
+const renderRelease=()=>{
+  const c=CASES[cur], s=ST[cur];
+  const blocks=SLOTS.map((name,i)=>{
+    const k=s.picked[i+1];
+    if(k==null) return `<p class="blk empty">${esc(name)}</p>`;
+    const o=c.slots[i][k];
+    return `<div class="blk filled${fresh===i+1?' new':''}">${esc(o.text)}${o.tags&&o.tags.length?`<div class="tags">${o.tags.map(t=>`<span class="tag">${esc(t)}</span>`).join('')}</div>`:''}</div>`;
+  }).join('');
+  $('release').innerHTML=`<div class="h"><span>Pressemitteilung</span><span>${s.step>0?esc(TYPES[c.type]):'Entwurf'}</span></div><h4>${esc(c.headline)}</h4>${blocks}`;
+};
+const question=(label,title,opts,stepIdx)=>{
+  const s=ST[cur], tried=s.tried[stepIdx]||[];
+  const solved=opts.findIndex(o=>o.ok);
+  const done=tried.includes(solved);
+  const last=tried[tried.length-1];
+  let fb='';
+  if(last!=null){const o=opts[last];fb=`<div class="fb ${o.ok?'ok':'no'}"><b>${o.ok?'Richtig':'Nicht ganz'}</b><p>${esc(o.fb)}</p></div>`}
+  return `<div class="q"><p class="k">${esc(label)}</p><h3>${esc(title)}</h3>
+    <div class="opts">${opts.map((o,i)=>{const t=tried.includes(i);const cls=t?(o.ok?'right':'wrong'):'';return `<button type="button" class="opt ${cls}" id="o-${i}" ${t||done?'disabled':''}>${esc(o.label||o.text)}</button>`}).join('')}</div>
+    ${fb}${done?`<button type="button" class="btn" id="next">${stepIdx<5?'Weiter':'Zur Auflösung'}</button>`:''}</div>`;
+};
+const renderStage=()=>{
+  const c=CASES[cur], s=ST[cur];
+  if(s.step===0){
+    const opts=TYPES.map((t,i)=>({label:t,ok:i===c.type,fb:c.typeFb[i]}));
+    $('stage').innerHTML=question('Schritt 1 von 6','Um welchen Krisentyp handelt es sich?',opts,0);
+    bind(opts,0);
+  } else if(s.step<=5){
+    const i=s.step-1;
+    $('stage').innerHTML=question(`Schritt ${s.step+1} von 6 · Baustein ${s.step}`,SLOTS[i],c.slots[i],s.step);
+    bind(c.slots[i],s.step);
+  } else {
+    const r=c.real;
+    const used=new Set(c.slots.flatMap(sl=>sl.filter(o=>o.ok).flatMap(o=>o.tags||[])));
+    const next=ST.findIndex(x=>x.step<6);
+    $('stage').innerHTML=`<div class="result">
+      <p class="score"><span>${s.first} von 6</span> beim ersten Versuch</p>
+      <p>Das fertige Statement steht ${matchMedia('(max-width:860px)').matches?'unten':'rechts'}. Es folgt dem Muster, das Coombs (2007) für eine ${esc(TYPES[c.type])} empfiehlt.</p>
+      <div class="feat"><h3>Merkmale der Emotionalisierung im Statement</h3><ul>${FEATURES.map(f=>`<li class="${used.has(f)?'on':''}">${esc(f)}</li>`).join('')}</ul><p class="note">nach Opiłowski (2020), wie in der Checkliste im Blogbeitrag</p></div>
+      <div class="real"><h3>Das echte Vorbild: ${esc(r.name)}</h3>${r.text.map(p=>`<p>${esc(p)}</p>`).join('')}<p><strong>Was das Unternehmen tat:</strong></p><ul>${r.did.map(d=>`<li>${esc(d)}</li>`).join('')}</ul><p>${esc(r.outcome)}</p>${r.orig?`<div class="orig"><h4>Originaldokumente</h4>${r.origNote?`<p class="on">${esc(r.origNote)}</p>`:''}<ul>${r.orig.map(([n,u])=>`<li><a href="${esc(u)}" rel="noopener" target="_blank">${esc(n)}</a></li>`).join('')}</ul></div>`:''}<p class="src">Weitere Quellen: ${r.src.map(([n,u])=>`<a href="${esc(u)}" rel="noopener" target="_blank">${esc(n)}</a>`).join(' · ')}</p></div>
+      ${next>=0?`<button type="button" class="btn" id="goNext">Weiter mit ${esc(CASES[next].tab)}</button>`:`<p style="margin-top:16px"><strong>Alle drei Fälle sind gelöst.</strong> Im <a href="simulator.html">Shitstorm-Simulator</a> lässt sich nachstellen, wie sich die Fälle mit anderen Reaktionen entwickelt hätten.</p>`}
+      <button type="button" class="btn sec" id="again">Fall neu starten</button></div>`;
+    if(next>=0) $('goNext').addEventListener('click',()=>{cur=next;render();window.scrollTo({top:0,behavior:'smooth'})});
+    $('again').addEventListener('click',()=>{ST[cur]={step:0,tried:{},first:0,picked:{}};render()});
+  }
+};
+const bind=(opts,stepIdx)=>{
+  const s=ST[cur];
+  opts.forEach((o,i)=>{const b=$('o-'+i); if(!b||b.disabled) return;
+    b.addEventListener('click',()=>{
+      const t=s.tried[stepIdx]||(s.tried[stepIdx]=[]);
+      if(t.includes(i)) return;
+      t.push(i);
+      if(o.ok){ if(t.length===1) s.first++; if(stepIdx>0){s.picked[stepIdx]=i; fresh=stepIdx;} }
+      renderStage(); renderRelease(); fresh=null;
+      const f=document.querySelector('.fb'); if(f) f.scrollIntoView({block:'nearest',behavior:'smooth'});
+    })});
+  const n=$('next'); if(n) n.addEventListener('click',()=>{s.step++;render();const st=$('steps');if(st.getBoundingClientRect().top<0) st.scrollIntoView({behavior:'smooth'})});
+};
+const render=()=>{renderTabs();renderCase();renderSteps();renderStage();renderRelease()};
+render();
+}
+</script>
+<script>
+{
+const b=document.getElementById('themeBtn'), r=document.documentElement, mq=matchMedia('(prefers-color-scheme: dark)');
+const cur=()=>r.dataset.theme||(mq.matches?'dark':'light');
+const SUN='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>';
+const MOON='<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.5 14.6A8.5 8.5 0 0 1 9.4 3.5a8.5 8.5 0 1 0 11.1 11.1z"/></svg>';
+const paint=()=>{const d=cur()==='dark';b.innerHTML=d?SUN:MOON;const l=d?'Helles Design':'Dunkles Design';b.setAttribute('aria-label',l+' einschalten');b.title=l;};
+b.addEventListener('click',()=>{const n=cur()==='dark'?'light':'dark';r.dataset.theme=n;try{localStorage.setItem('theme',n)}catch(e){}paint();});
+if(mq.addEventListener) mq.addEventListener('change',paint);
+paint();
+}
+</script>
+</body>
+</html>
