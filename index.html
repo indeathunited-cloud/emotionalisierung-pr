@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>try{var t=localStorage.getItem("theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script>
+
+<title>Emotionalisierung in der PR</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* VOICE seminar landing page: plain, two clear choices
+   IDEA the blog's banner as the front cover, two red-edged cards beneath
+   PICTURE the blurred FCK bucket banner with the stacked headline
+   COLOUR white ground, ink, blog red, paper cards
+   TYPE Montserrat 800 + Inter
+   LAYOUT banner across the top, three cards side by side; stacked on phones */
+:root{color-scheme:light dark;
+  --bg:light-dark(#ffffff,#141110);--ink:light-dark(#1b1b1b,#f1ece7);--mute:light-dark(#6d6a67,#a8a09a);
+  --red:light-dark(#A1151C,#e2363d);--paper:light-dark(#f5f1ec,#221d1b);--line:light-dark(#ddd5cd,#3a3330)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:17px/1.6 Inter,system-ui,sans-serif;overflow-x:clip}
+.banner{position:relative;min-height:clamp(300px,48vh,500px);display:flex;align-items:flex-end;background:#111 url(blog-banner.jpg) center/cover no-repeat;padding:40px max(5vw,16px) clamp(26px,4vw,48px)}
+.in{width:100%;max-width:1100px;margin:0 auto}
+.stack{font:800 min(7.4vw,86px)/.98 Montserrat,Inter,sans-serif;text-transform:uppercase;color:#fff;letter-spacing:-.01em;margin:0}
+.stack span{display:block;white-space:nowrap}
+.stack .g1{color:rgba(255,255,255,.18)}.stack .g2{color:rgba(255,255,255,.36)}
+.deck{max-width:1100px;margin:0 auto;padding:clamp(22px,3.5vw,36px) max(5vw,16px) 0}
+.deck p{font:800 clamp(19px,2.4vw,26px)/1.22 Montserrat,Inter,sans-serif;text-transform:uppercase;margin:0;padding-bottom:16px;border-bottom:2px solid var(--ink);max-width:32em}
+.deck em{font-style:normal;color:var(--red)}
+.cards{max-width:1100px;margin:0 auto;padding:clamp(22px,3.5vw,36px) max(5vw,16px) 48px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.card{display:flex;flex-direction:column;background:var(--paper);border-top:6px solid var(--red);padding:22px 22px 24px;color:var(--ink);text-decoration:none;transition:transform .15s}
+.card:hover{transform:translateY(-3px)}
+.card:focus-visible{outline:3px solid var(--red);outline-offset:3px}
+.card .k{font:600 14px Inter,sans-serif;color:var(--mute);margin:0 0 4px}
+.card h2{font:800 clamp(18px,1.9vw,24px)/1.1 Montserrat,Inter,sans-serif;text-transform:uppercase;margin:0 0 10px;hyphens:none}
+.card p{margin:0 0 18px;hyphens:auto;text-wrap:pretty}
+.card .go{margin-top:auto;align-self:flex-start;background:var(--red);color:#fff;font:700 15px Inter,sans-serif;padding:11px 18px}
+.card:hover .go{background:var(--ink);color:var(--bg)}
+.more{max-width:1100px;margin:0 auto;padding:0 max(5vw,16px) 48px;font-size:15px;color:var(--mute)}
+.more a{color:var(--red);font-weight:600}
+@media(prefers-reduced-motion:reduce){.card{transition:none}.card:hover{transform:none}}
+@media(max-width:900px){.cards{grid-template-columns:minmax(0,1fr)}}
+
+/* Navigation (auf allen Seiten gleich) */
+.site-nav{position:sticky;top:0;z-index:60;background:var(--bg);border-bottom:1px solid var(--line)}
+.site-nav .in{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:4px 20px;padding:0 max(4vw,16px);min-height:56px}
+.site-nav .home{font:800 15px/1.2 Montserrat,Inter,sans-serif;text-transform:uppercase;color:var(--ink);text-decoration:none;margin-right:auto;white-space:nowrap}
+.site-nav .home .s{display:none}
+.site-nav a.l{font:600 15px Inter,system-ui,sans-serif;color:var(--ink);text-decoration:none;padding:8px 0;border-bottom:2px solid transparent;white-space:nowrap}
+.site-nav a.l:hover{border-bottom-color:var(--line)}
+.site-nav a.l[aria-current=page]{color:var(--red);border-bottom-color:var(--red)}
+.site-nav a:focus-visible{outline:3px solid var(--red);outline-offset:3px}
+.theme-btn{flex:none;width:40px;height:40px;border-radius:50%;border:1.5px solid var(--ink);background:var(--bg);color:var(--ink);display:grid;place-items:center;cursor:pointer;padding:0;margin-left:4px}
+.theme-btn:hover{background:var(--ink);color:var(--bg)}
+.theme-btn:focus-visible{outline:3px solid var(--red);outline-offset:2px}
+.theme-btn svg{width:18px;height:18px;display:block}
+@media(max-width:600px){.site-nav .home .f{display:none}.site-nav .home .s{display:inline}.site-nav .in{gap:4px 14px}.site-nav a.l{font-size:14px}}
+@media print{.site-nav{display:none}}
+</style>
+</head>
+<body>
+<nav class="site-nav" aria-label="Seiten"><div class="in"><a class="home" href="index.html" aria-current="page"><span class="f">Emotionalisierung in der PR</span><span class="s">Start</span></a><a class="l" href="blog.html">Blog</a><a class="l" href="simulator.html">Simulator</a><a class="l" href="baukasten.html">Baukasten</a><button class="theme-btn" id="themeBtn" type="button"></button></div></nav>
+
+<header class="banner">
+  <div class="in">
+    <h1 class="stack" aria-label="Emotionalisierung in der PR"><span class="g1" aria-hidden="true">Emotionalisierung</span><span class="g2" aria-hidden="true">Emotionalisierung</span><span>Emotionalisierung</span><span>in der PR</span></h1>
+  </div>
+</header>
+<div class="deck"><p>Wann <em>helfen</em> Gefühle in der Krisenkommunikation, und wann <em>schaden</em> sie?</p></div>
+
+<main class="cards">
+  <a class="card" href="blog.html">
+    <p class="k">Blogbeitrag</p>
+    <h2>Lesen</h2>
+    <p>Am Beispiel der FCK-Anzeige von KFC: was Emotionen sind, warum Krisen immer emotional sind und wann Gefühle in der Krisenkommunikation helfen oder schaden.</p>
+    <span class="go">Zum Beitrag →</span>
+  </a>
+  <a class="card" href="simulator.html">
+    <p class="k">Interaktives Modell</p>
+    <h2>Ausprobieren</h2>
+    <p>Der Shitstorm-Simulator zeigt anhand von neun Fragen zu einer Krise, wie weit sich negative Reaktionen verbreiten und welche Faktoren dazu beitragen.</p>
+    <span class="go">Zum Simulator →</span>
+  </a>
+  <a class="card" href="baukasten.html">
+    <p class="k">Lernspiel</p>
+    <h2>Üben</h2>
+    <p>Im Statement-Baukasten setzt du für drei echte Krisen das passende Statement zusammen. Welche Fälle dahinterstecken, verrät die Auflösung am Ende.</p>
+    <span class="go">Zum Baukasten →</span>
+  </a>
+</main>
+<script>
+{
+const b=document.getElementById('themeBtn'), r=document.documentElement, mq=matchMedia('(prefers-color-scheme: dark)');
+const cur=()=>r.dataset.theme||(mq.matches?'dark':'light');
+const SUN='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>';
+const MOON='<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.5 14.6A8.5 8.5 0 0 1 9.4 3.5a8.5 8.5 0 1 0 11.1 11.1z"/></svg>';
+const paint=()=>{const d=cur()==='dark';b.innerHTML=d?SUN:MOON;const l=d?'Helles Design':'Dunkles Design';b.setAttribute('aria-label',l+' einschalten');b.title=l;};
+b.addEventListener('click',()=>{const n=cur()==='dark'?'light':'dark';r.dataset.theme=n;try{localStorage.setItem('theme',n)}catch(e){}paint();});
+if(mq.addEventListener) mq.addEventListener('change',paint);
+paint();
+}
+</script>
+</body>
+</html>
